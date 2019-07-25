@@ -1,0 +1,14 @@
+node {
+    def project
+    def image
+
+    stage('Prepare') {
+        checkout scm
+        project = readYaml file: './.ci/project.yml'
+    }
+    stage('Testing'){
+        sh """
+            ./test/scripts/test-ci.sh
+        """
+    }
+}

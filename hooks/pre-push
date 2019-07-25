@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# How to use
+#
+# 1. Copy this file to .git/hooks directory with "pre-push" as filename
+# 2. Run "chmod +x pre-push"
+# 3. Uncomment and change export environment value if you have different postgres user
+# 4. Add, commit and push as usual
+#
+# This script will cancel push command on conditions below:
+# 1. Failed to rebase branch to origin/master because of conflict (please re-rebase and fix conflict yourself before trying to push again)
+# 2. Failing test run (please fix any wrong code / wrong test before trying to push again)
+
+set -x
+
+if [ "$(git symbolic-ref --short HEAD)" != "master" ]; then
+	git fetch --all
+	git rebase origin/master
+	rebase=$?
+
+	if [ $rebase -ne 0 ]; then
+		git rebase --abort
+		exit 1
+	fi
+fi
+
+set -e
+
+#export DB_USER=postgres
+#export DB_PASS=postgres
+#export TEST_DB_USER=postgres
+#export TEST_DB_PASS=postgres
+
+./test/scripts/test.sh

@@ -1,0 +1,42 @@
+openapi: "3.0.0"
+info:
+  title: Go-Backend API Contract
+  version: 0.0.1
+servers:
+  - url: https://localhost:8080
+    description: Development
+components:
+  schemas:
+  # REQUEST BODY
+    Register:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          example: "0818161301"
+        referralCode:
+          type: string
+          example: "3db9fcd301"
+        
+paths:
+  /v1/external/users/register:
+    post:
+      tags:
+        - Register User
+      summary: Register User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "200":
+          description: Success register user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "success"
