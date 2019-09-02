@@ -12,6 +12,8 @@ var missingProjectName = `Invalid use of 'init' command!
 Please write your project name after 'init'
 Usage: tango init my-new-project`
 
+var invalidProjectName = `Invalid project name, 'test' cannot be used for project name!`
+
 var fileName = `tango-init.sh`
 
 var initScripts = `#!/bin/sh
@@ -37,6 +39,11 @@ func InitCommand() cli.Command {
 			projectName := c.Args().Get(0)
 			if "" == projectName {
 				fmt.Println(missingProjectName)
+				return
+			}
+
+			if "test" == projectName {
+				fmt.Println(invalidProjectName)
 				return
 			}
 
