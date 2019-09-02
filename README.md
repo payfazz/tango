@@ -2,6 +2,24 @@
 
 tango is a skeleton for building golang web services
 
+## Documentation
+
+### Installation
+
+Use the `go` command:
+
+```
+$ go get github.com/payfazz/tango
+```
+
+### CLI Command
+
+Create new project directory, new directory with the same name as <my-project-name> will be created on your current directory
+
+```
+$ tango init <my-project-name>
+```
+
 ## Features
 
 #### Supported DB
@@ -36,6 +54,3 @@ Deployment:
 - code generator (CRUD with service, command, query and repository)
 - unit test per service
 - swagger with go-swagger
-
-## Documentation
-
