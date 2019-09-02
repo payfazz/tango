@@ -22,6 +22,12 @@ func RunScript(fileName string, content string, args ...string) error {
 		return errors.New(fmt.Sprintf("failed to write tango-init.sh: %s", err))
 	}
 
+	// Close file after writing
+	err = initFile.Close()
+	if nil != err {
+		return errors.New(fmt.Sprintf("failed to close file tango-init.sh: %s", err))
+	}
+
 	// Set chmod to 755
 	err = os.Chmod(fileName, 0755)
 	if nil != err {
