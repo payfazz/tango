@@ -14,8 +14,6 @@ Usage: tango init my-new-project`
 
 var invalidProjectName = `Invalid project name, 'test' cannot be used for project name!`
 
-var fileName = `tango-init.sh`
-
 var initScripts = `#!/bin/sh
 
 set -x
@@ -31,6 +29,8 @@ cd ..`
 
 // InitCommand defines cli.Command for init command
 func InitCommand() cli.Command {
+	var fileName = `tango-init.sh`
+
 	return cli.Command{
 		Name:    "init",
 		Aliases: []string{"i"},

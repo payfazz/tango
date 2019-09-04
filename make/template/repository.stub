@@ -1,0 +1,61 @@
+package repository
+
+import (
+	"context"
+
+	"github.com/payfazz/go-apt/pkg/fazzdb"
+)
+
+// {{camelModel}}Repository handle generic access to database
+type {{camelModel}}Repository struct {
+	base     fazzrepository.RepositoryInterface
+	{{camelModel}} *model.{{model}}
+}
+
+// GetQuery get query instance from context
+func (r *{{camelModel}}Repository) GetQuery(ctx context.Context) (*fazzdb.Query, error) {
+	return r.base.GetQuery(ctx)
+}
+
+// FindAll find data by given conditions, order, limit and offset
+func (r *{{camelModel}}Repository) FindAll(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order, limit int, offset int) ([]*model.{{model}}, error) {
+	results, err := r.base.FindAll(ctx, conditions, orders, limit, offset)
+	return results.([]*model.{{model}}), err
+}
+
+// FindOne find one data by given conditions and orders
+func (r *{{camelModel}}Repository) FindOne(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order) (*model.{{model}}, error) {
+	result, err := r.base.FindOne(ctx, conditions, orders)
+	return result.(*model.{{model}}), err
+}
+
+// Find find data by given id
+func (r *{{camelModel}}Repository) Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
+	result, err := r.base.Find(ctx, id)
+	return result.(*model.{{model}}), err
+}
+
+// Create insert data by given model
+func (r *{{camelModel}}Repository) Create(ctx context.Context, m fazzdb.ModelInterface) (*{{idDataType}}, error) {
+	result, err := r.base.Create(ctx, m)
+	return result.(*{{idDataType}}), err
+}
+
+// Update update data by given model
+func (r *{{camelModel}}Repository) Update(ctx context.Context, m fazzdb.ModelInterface) (bool, error) {
+	return r.base.Update(ctx, m)
+}
+
+// Delete delete data by given model
+func (r *{{camelModel}}Repository) Delete(ctx context.Context, m fazzdb.ModelInterface) (bool, error) {
+	return r.base.Delete(ctx, m)
+}
+
+// New{{model}}Repository constructor for {{camelModel}} repository
+func New{{model}}Repository() {{model}}RepositoryInterface {
+	m := model.{{model}}Model()
+	return &{{camelModel}}Repository{
+		base: fazzrepository.NewRepository(m),
+		{{camelModel}}: m,
+	}
+}

@@ -1,0 +1,32 @@
+package query
+
+import (
+	"context"
+)
+
+// {{model}}QueryInterface contract for sending query to {{camelModel}} table
+type {{model}}QueryInterface interface {
+	All(ctx context.Context) ([]*model.{{model}}, error)
+	ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error)
+}
+
+type {{camelModel}}Query struct {
+	repository repository.{{model}}RepositoryInterface
+}
+
+// All get data from {{camelModel}} without any conditions and orders
+func (q *{{camelModel}}Query) All(ctx context.Context) ([]*model.{{model}}, error) {
+	return q.repository.FindAll(ctx, nil, nil, 0, 0)
+}
+
+// ById get one data from {{camelModel}} by given id
+func (q *{{camelModel}}Query) ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
+	return q.repository.Find(ctx, id)
+}
+
+// New{{model}}Query constructor of {{camelModel}} query
+func New{{model}}Query() {{model}}QueryInterface {
+	return &{{camelModel}}Query{
+		repository: repository.New{{model}}Repository(),
+	}
+}

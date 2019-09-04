@@ -1,0 +1,12 @@
+package data
+
+// PayloadCreate{{model}} handle data when creating new {{camelModel}}
+type PayloadCreate{{model}} struct {
+    {{jsonFields}}
+}
+
+// PayloadUpdate{{model}} handle data when updating {{camelModel}}
+type PayloadUpdate{{model}} struct {
+    PayloadCreate{{model}}
+	Id {{idDataType}} `json:"id"`
+}

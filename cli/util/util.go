@@ -4,9 +4,32 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
+	"strings"
+
+	"github.com/payfazz/go-apt/pkg/fazzcommon/formatter"
 
 	"github.com/pkg/errors"
 )
+
+// SnakeToPascalCase convert str from snake_case to PascalCase
+func SnakeToPascalCase(str string) string {
+	var link = regexp.MustCompile("(^[A-Za-z])|_([A-Za-z])")
+	return link.ReplaceAllStringFunc(str, func(s string) string {
+		return strings.ToUpper(strings.Replace(s, "_", "", -1))
+	})
+}
+
+// SnakeToCamelCase convert str from snake_case to camelCase
+func SnakeToCamelCase(str string) string {
+	result := SnakeToPascalCase(str)
+	return formatter.ToLowerFirst(result)
+}
+
+// PascalToCamelCase convert str from PascalCase to camelCase
+func PascalToCamelCase(str string) string {
+	return formatter.ToLowerFirst(str)
+}
 
 // RunScript create sh file, run it, and delete sh file
 func RunScript(fileName string, content string, args ...string) error {

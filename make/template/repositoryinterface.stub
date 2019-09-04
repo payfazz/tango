@@ -1,0 +1,18 @@
+package repository
+
+import (
+	"context"
+
+	"github.com/payfazz/go-apt/pkg/fazzdb"
+)
+
+// {{model}}RepositoryInterface contract for {{camelModel}} repository
+type {{model}}RepositoryInterface interface {
+	GetQuery(ctx context.Context) (*fazzdb.Query, error)
+	FindAll(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order, limit int, offset int) ([]*model.{{model}}, error)
+	FindOne(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order) (*model.{{model}}, error)
+	Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error)
+	Create(ctx context.Context, m fazzdb.ModelInterface) (*{{idDataType}}, error)
+	Update(ctx context.Context, m fazzdb.ModelInterface) (bool, error)
+	Delete(ctx context.Context, m fazzdb.ModelInterface) (bool, error)
+}
