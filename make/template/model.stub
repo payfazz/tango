@@ -1,0 +1,36 @@
+package model
+
+// {{model}} handle data for {{table}} table
+type {{model}} struct {
+	fazzdb.Model
+	Id {{idDataType}} `json:"id" db:"id"`
+	{{fields}}
+}
+
+{{generatePK}}
+
+// Get find model data by key
+func (m *{{model}}) Get(key string) interface{} {
+	return m.Payload()[key]
+}
+
+// Payload map model data into map[string]interface{}
+func (m *{{model}}) Payload() map[string]interface{} {
+	return m.MapPayload(m)
+}
+
+// {{model}}Model construct the {{model}} model
+func {{model}}Model() *{{model}} {
+	return &{{model}}{
+		Model: fazzdb.{{idType}}Model(
+			"{{table}}",
+			[]fazzdb.Column{
+			    fazzdb.Col("id"),
+				{{colFields}}
+			},
+			"id",
+			{{timestamps}},
+			{{softDeletes}},
+		),
+	}
+}

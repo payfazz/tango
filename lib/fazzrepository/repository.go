@@ -7,31 +7,30 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 )
 
-// RepositoryInterface is an interface for repository
+// RepositoryInterface contract for repository struct
 type RepositoryInterface interface {
 	GetQuery(ctx context.Context) (*fazzdb.Query, error)
 
 	FindAll(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order, limit int, offset int) (interface{}, error)
 	FindOne(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order) (interface{}, error)
-	Find(ctx context.Context, ID interface{}) (interface{}, error)
+	Find(ctx context.Context, id interface{}) (interface{}, error)
 
 	Create(ctx context.Context, m fazzdb.ModelInterface) (interface{}, error)
 	Update(ctx context.Context, m fazzdb.ModelInterface) (bool, error)
 	Delete(ctx context.Context, m fazzdb.ModelInterface) (bool, error)
-
-	Count(ctx context.Context, conditions []fazzdb.SliceCondition) (*float64, error)
 }
 
+// Repository base struct for all repository
 type Repository struct {
 	model fazzdb.ModelInterface
 }
 
-// GetQuery is a function to get query from ctx
+// GetQuery get query instance from context
 func (r *Repository) GetQuery(ctx context.Context) (*fazzdb.Query, error) {
 	return fazzdb.GetTransactionOrQueryContext(ctx)
 }
 
-// FindAll is a function that used to get all data
+// FindAll find data by given conditions, order, limit and offset
 func (r *Repository) FindAll(
 	ctx context.Context,
 	conditions []fazzdb.SliceCondition,
@@ -61,7 +60,7 @@ func (r *Repository) FindAll(
 	return current.AllCtx(ctx)
 }
 
-// FindOneBy is a function that used to find one data with some conditions
+// FindOne find one data by given conditions and orders
 func (r *Repository) FindOne(
 	ctx context.Context,
 	conditions []fazzdb.SliceCondition,
@@ -90,15 +89,15 @@ func (r *Repository) FindOne(
 	return val.Index(0).Interface(), nil
 }
 
-// Find is a function that used to find the data
-func (r *Repository) Find(ctx context.Context, ID interface{}) (interface{}, error) {
+// Find find data by given id
+func (r *Repository) Find(ctx context.Context, id interface{}) (interface{}, error) {
 	q, err := r.GetQuery(ctx)
 	if nil != err {
 		return nil, err
 	}
 
 	rows, err := q.Use(r.model).
-		Where("id", ID).
+		Where("id", id).
 		WithLimit(1).
 		AllCtx(ctx)
 
@@ -114,7 +113,7 @@ func (r *Repository) Find(ctx context.Context, ID interface{}) (interface{}, err
 	return val.Index(0).Interface(), nil
 }
 
-// Create is a function that used to create the data
+// Create insert data by given model
 func (r *Repository) Create(ctx context.Context, m fazzdb.ModelInterface) (interface{}, error) {
 	q, err := r.GetQuery(ctx)
 	if nil != err {
@@ -131,7 +130,7 @@ func (r *Repository) Create(ctx context.Context, m fazzdb.ModelInterface) (inter
 	return result, nil
 }
 
-// Update is a function that used to update the data
+// Update update data by given model
 func (r *Repository) Update(ctx context.Context, m fazzdb.ModelInterface) (bool, error) {
 	q, err := r.GetQuery(ctx)
 	if nil != err {
@@ -148,7 +147,7 @@ func (r *Repository) Update(ctx context.Context, m fazzdb.ModelInterface) (bool,
 	return true, nil
 }
 
-// Delete is a function to delete the data
+// Delete delete data by given model
 func (r *Repository) Delete(ctx context.Context, m fazzdb.ModelInterface) (bool, error) {
 	q, err := r.GetQuery(ctx)
 	if nil != err {
@@ -165,20 +164,9 @@ func (r *Repository) Delete(ctx context.Context, m fazzdb.ModelInterface) (bool,
 	return true, err
 }
 
-// Count is a function that used to get count of all data with given conditions
-func (r *Repository) Count(ctx context.Context, conditions []fazzdb.SliceCondition) (*float64, error) {
-	q, err := r.GetQuery(ctx)
-	if nil != err {
-		return nil, err
+// NewRepository constructor for base repository
+func NewRepository(m fazzdb.ModelInterface) RepositoryInterface {
+	return &Repository{
+		model: m,
 	}
-
-	return q.Use(r.model).
-		WhereMany(conditions...).
-		WithLimit(0).
-		CountCtx(ctx)
-}
-
-// NewRepository is a constructor for cash back repo
-func NewRepository() RepositoryInterface {
-	return &Repository{}
 }

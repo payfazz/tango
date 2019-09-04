@@ -1,0 +1,52 @@
+package {{domain}}
+
+import (
+	"context"
+)
+
+// ServiceInterface contract for {{camelModel}} service
+type ServiceInterface interface {
+	FindAll(ctx context.Context) ([]*model.{{model}}, error)
+	Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error)
+	Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error)
+	Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error)
+	Delete(ctx context.Context, id {{idDataType}}) (bool, error)
+}
+
+type service struct {
+	query   query.{{model}}QueryInterface
+	command command.{{model}}CommandInterface
+}
+
+// FindAll service for getting all {{camelModel}}
+func (s *service) FindAll(ctx context.Context) ([]*model.{{model}}, error) {
+	return s.query.All(ctx)
+}
+
+// Find service for getting {{camelModel}} by given id
+func (s *service) Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
+	return s.query.ById(ctx, id)
+}
+
+// Create service for creating {{camelModel}} by given payload
+func (s *service) Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error) {
+	return s.command.Create(ctx, payload)
+}
+
+// Update service for updating {{camelModel}} by given payload
+func (s *service) Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error) {
+	return s.command.Update(ctx, payload)
+}
+
+// Delete service for removing {{camelModel}} by given id
+func (s *service) Delete(ctx context.Context, id {{idDataType}}) (bool, error) {
+	return s.command.Delete(ctx, id)
+}
+
+// New{{model}}Service constructor of {{camelModel}} service
+func New{{model}}Service() ServiceInterface {
+	return &service{
+		query:   query.New{{model}}Query(),
+		command: command.New{{model}}Command(),
+	}
+}
