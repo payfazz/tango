@@ -14,10 +14,22 @@ $ go get github.com/payfazz/tango
 
 ### CLI Command
 
+#### Init project
+
 Create new project directory, new directory with the same name as <my-project-name> will be created on your current directory
 
 ```
 $ tango init <my-project-name>
+```
+
+#### Generate project structure
+
+Generate required domain file (using CQS principle) and given base repository
+
+Note: template can be modified in `./make/template` directory
+
+```
+$ tango make <path_to_structure; default: ./make/structure.yaml>
 ```
 
 ## Features
@@ -38,6 +50,7 @@ $ tango init <my-project-name>
 - middleware using go-middleware
 - cors middleware
 - environment flagging
+- code generator (CRUD with service, command, query and repository)
 
 Integration:
 - authfazz
@@ -51,6 +64,5 @@ Deployment:
 #### Planned
 
 - CLI
-- code generator (CRUD with service, command, query and repository)
 - unit test per service
 - swagger with go-swagger
