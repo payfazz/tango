@@ -32,6 +32,12 @@ Note: template can be modified in `./make/template` directory
 $ tango make <path_to_structure; default: ./make/structure.yaml>
 ```
 
+If you need to overwrite all previous code you can use the --force, --f flags. The CLI will backup all your code inside domain directory and generate new stubs in the domain directory.
+
+```
+$ tango make --force
+```
+
 ## Features
 
 #### Supported DB
