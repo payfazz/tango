@@ -6,23 +6,27 @@ import (
 
 // {{model}}QueryInterface contract for sending query to {{camelModel}} table
 type {{model}}QueryInterface interface {
-	All(ctx context.Context) ([]*model.{{model}}, error)
-	ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error)
+	{{re-tag}}All(ctx context.Context) ([]*model.{{model}}, error){{end-re-tag}}
+	{{fi-tag}}ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error){{end-fi-tag}}
 }
 
 type {{camelModel}}Query struct {
 	repository repository.{{model}}RepositoryInterface
 }
 
+{{re-tag}}
 // All get data from {{camelModel}} without any conditions and orders
 func (q *{{camelModel}}Query) All(ctx context.Context) ([]*model.{{model}}, error) {
 	return q.repository.FindAll(ctx, nil, nil, 0, 0)
 }
+{{end-re-tag}}
 
+{{fi-tag}}
 // ById get one data from {{camelModel}} by given id
 func (q *{{camelModel}}Query) ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
 	return q.repository.Find(ctx, id)
 }
+{{end-fi-tag}}
 
 // New{{model}}Query constructor of {{camelModel}} query
 func New{{model}}Query() {{model}}QueryInterface {

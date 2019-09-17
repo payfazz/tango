@@ -35,8 +35,29 @@ structures:
     action:
       create: true
       read: true
+      find: true
       update: true
       delete: true
+    childs:
+      - model: Publisher
+        table: publishers
+        idType: *UUID
+        idDataType: *STRING
+        timestamps: true
+        softDeletes: true
+        fields:
+          - name: book_id
+            type: *STRING_PTR
+          - name: name
+            type: *STRING
+          - name: founded_at
+            type: *TIME
+        action:
+          create: false
+          read: false
+          find: false
+          update: true
+          delete: false
   - model: Author
     table: authors
     idType: *AUTO_INCREMENT
@@ -57,5 +78,6 @@ structures:
     action:
       create: true
       read: true
+      find: true
       update: false
       delete: false
