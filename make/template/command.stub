@@ -7,18 +7,19 @@ import (
 
 // {{model}}CommandInterface contract for sending command to {{camelModel}} table
 type {{model}}CommandInterface interface {
-	Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error)
-	Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error)
-	Delete(ctx context.Context, id {{idDataType}}) (bool, error)
-	ModelCreate(ctx context.Context, m *model.{{model}}) (*{{idDataType}}, error)
-	ModelUpdate(ctx context.Context, m *model.{{model}}) (bool, error)
-	ModelDelete(ctx context.Context, m *model.{{model}}) (bool, error)
+	{{cr-tag}}Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error){{end-cr-tag}}
+	{{up-tag}}Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error){{end-up-tag}}
+	{{de-tag}}Delete(ctx context.Context, id {{idDataType}}) (bool, error){{end-de-tag}}
+	{{cr-tag}}ModelCreate(ctx context.Context, m *model.{{model}}) (*{{idDataType}}, error){{end-cr-tag}}
+	{{up-tag}}ModelUpdate(ctx context.Context, m *model.{{model}}) (bool, error){{end-up-tag}}
+	{{de-tag}}ModelDelete(ctx context.Context, m *model.{{model}}) (bool, error){{end-de-tag}}
 }
 
 type {{camelModel}}Command struct {
 	repository repository.{{model}}RepositoryInterface
 }
 
+{{cr-tag}}
 // Create is a function to create new {{model}} model and push it to database
 func (c *{{camelModel}}Command) Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error) {
 	m := model.{{model}}Model()
@@ -27,7 +28,9 @@ func (c *{{camelModel}}Command) Create(ctx context.Context, payload *data.Payloa
 
 	return c.ModelCreate(ctx, m)
 }
+{{end-cr-tag}}
 
+{{up-tag}}
 // Update is a function to update {{model}} model and push it to database
 func (c *{{camelModel}}Command) Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error) {
     m, err := c.repository.Find(ctx, payload.Id)
@@ -42,7 +45,9 @@ func (c *{{camelModel}}Command) Update(ctx context.Context, payload *data.Payloa
 
 	return c.ModelUpdate(ctx, m)
 }
+{{end-up-tag}}
 
+{{de-tag}}
 // Delete is a function to delete {{camelModel}} by id
 func (c *{{camelModel}}Command) Delete(ctx context.Context, id {{idDataType}}) (bool, error) {
 	m, err := c.repository.Find(ctx, id)
@@ -55,21 +60,28 @@ func (c *{{camelModel}}Command) Delete(ctx context.Context, id {{idDataType}}) (
 
 	return c.ModelDelete(ctx, m)
 }
+{{end-de-tag}}
 
+{{cr-tag}}
 // ModelCreate create directly using given {{camelModel}}Model
 func (c *{{camelModel}}Command) ModelCreate(ctx context.Context, m *model.{{model}}) (*{{idDataType}}, error) {
 	return c.repository.Create(ctx, m)
 }
+{{end-cr-tag}}
 
+{{up-tag}}
 // ModelUpdate update directly using given {{camelModel}}Model
 func (c *{{camelModel}}Command) ModelUpdate(ctx context.Context, m *model.{{model}}) (bool, error) {
 	return c.repository.Update(ctx, m)
 }
+{{end-up-tag}}
 
+{{de-tag}}
 // ModelDelete delete directly using given {{camelModel}}Model
 func (c *{{camelModel}}Command) ModelDelete(ctx context.Context, m *model.{{model}}) (bool, error) {
 	return c.repository.Delete(ctx, m)
 }
+{{end-de-tag}}
 
 // New{{model}}Command constructor of {{camelModel}} command
 func New{{model}}Command() {{model}}CommandInterface {
