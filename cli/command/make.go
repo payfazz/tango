@@ -59,7 +59,7 @@ func MakeCommand() cli.Command {
 
 			// Generate stubs
 			for _, structure := range structureMap.Structures {
-				make.GenerateStubs(structure)
+				structure.Generate(dir)
 			}
 
 			err = util.RunScript(fileName, makeScripts)
