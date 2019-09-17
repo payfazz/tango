@@ -38,7 +38,7 @@ structures:
       find: true
       update: true
       delete: true
-    childs:
+    subdomains:
       - model: Publisher
         table: publishers
         idType: *UUID

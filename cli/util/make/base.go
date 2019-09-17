@@ -1,5 +1,10 @@
 package make
 
+import (
+	"fmt"
+	"strings"
+)
+
 // StructureMap handle overall structure mapping
 type StructureMap struct {
 	Structures []*Structure `yaml:"structures"`
@@ -15,7 +20,17 @@ type Structure struct {
 	SoftDelete bool         `yaml:"softDeletes"`
 	Fields     []*Field     `yaml:"fields"`
 	Action     *Action      `yaml:"action"`
-	Childs     []*Structure `yaml:"childs"`
+	Subdomains []*Structure `yaml:"subdomains"`
+}
+
+// Generate generate current structure and all its child
+func (s *Structure) Generate(baseDir string) {
+	GenerateStubs(s, baseDir)
+
+	domain := strings.ToLower(s.Model)
+	for _, c := range s.Subdomains {
+		c.Generate(fmt.Sprintf("%s/%s/sub", baseDir, domain))
+	}
 }
 
 // Field handle field inside structure.yaml mapping

@@ -32,13 +32,13 @@ var dirFileMode = os.FileMode(0755)
 var goFileMode = os.FileMode(0644)
 
 // GenerateStubs generate all required stubs for CRUD
-func GenerateStubs(structure *Structure) {
+func GenerateStubs(structure *Structure, baseDir string) {
 	domain := strings.ToLower(structure.Model)
 
 	oldString, newString := generateStructureReplacements(structure, domain)
 
 	// Make root directory
-	dir := fmt.Sprintf("./internal/domain/%s", domain)
+	dir := fmt.Sprintf("%s/%s", baseDir, domain)
 	err := os.MkdirAll(dir, dirFileMode)
 	if nil != err {
 		panic(err)
@@ -121,7 +121,7 @@ func (m *meta) parseAction(action *Action) {
 		m.unused = append(m.unused, COMMAND_TAG)
 	}
 
-	if action.IsCommandNeeded() {
+	if action.IsQueryNeeded() {
 		m.old = append(m.old, fmt.Sprintf("{{%s}}", QUERY_TAG), fmt.Sprintf("{{end-%s}}", QUERY_TAG))
 		m.new = append(m.new, "", "")
 	} else {
