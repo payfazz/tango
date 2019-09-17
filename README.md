@@ -40,29 +40,23 @@ $ tango make <path_to_structure; default: ./make/structure.yaml>
 
 #### Implemented
 
-- simple access control list (by endpoint)
-- throttling
-- pre push git hooks
-- migration using fazzdb
-- seeder using fazzdb
-- query logging using fazzdb
-- routing using fazzrouter
-- middleware using go-middleware
-- cors middleware
-- environment flagging
-- code generator (CRUD with service, command, query and repository)
-
-Integration:
-- authfazz
-- contentfazz
+- Endpoint throttling
+- Pre push git hooks
+- Migration using fazzdb
+- Seeder using fazzdb
+- Query logging using fazzdb
+- Routing using fazzrouter + go-router
+- Middleware using go-middleware
+- Cors middleware
+- Environment flagging
+- Code generator (CRUD with service, command, query and repository)
 
 Deployment:
 - Dockerfile
 - Jenkinsfile
-- test scripts
+- Test scripts
 
 #### Planned
 
 - CLI
-- unit test per service
-- swagger with go-swagger
+- Unit test per service
