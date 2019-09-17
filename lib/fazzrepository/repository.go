@@ -11,6 +11,12 @@ import (
 type RepositoryInterface interface {
 	GetQuery(ctx context.Context) (*fazzdb.Query, error)
 
+	Count(ctx context.Context, conditions []fazzdb.SliceCondition) (*float64, error)
+	Sum(ctx context.Context, column string, conditions []fazzdb.SliceCondition) (*float64, error)
+
+	RawSelect(ctx context.Context, sample interface{}, query string, payload ...interface{}) (interface{}, error)
+	RawExec(ctx context.Context, query string, payload ...interface{}) (bool, error)
+
 	FindAll(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order, limit int, offset int) (interface{}, error)
 	FindOne(ctx context.Context, conditions []fazzdb.SliceCondition, orders []fazzdb.Order) (interface{}, error)
 	Find(ctx context.Context, id interface{}) (interface{}, error)
@@ -28,6 +34,50 @@ type Repository struct {
 // GetQuery get query instance from context
 func (r *Repository) GetQuery(ctx context.Context) (*fazzdb.Query, error) {
 	return fazzdb.GetTransactionOrQueryContext(ctx)
+}
+
+// Count find count of rows using given conditions
+func (r *Repository) Count(ctx context.Context, conditions []fazzdb.SliceCondition) (*float64, error) {
+	q, err := r.GetQuery(ctx)
+	if nil != err {
+		return nil, err
+	}
+
+	return q.Use(r.model).
+		WhereMany(conditions...).
+		CountCtx(ctx)
+}
+
+// Sum find sum of column using given conditions
+func (r *Repository) Sum(ctx context.Context, column string, conditions []fazzdb.SliceCondition) (*float64, error) {
+	q, err := r.GetQuery(ctx)
+	if nil != err {
+		return nil, err
+	}
+
+	return q.Use(r.model).
+		WhereMany(conditions...).
+		SumCtx(ctx, column)
+}
+
+// RawSelect find data by raw query and payload if there is arguments
+func (r *Repository) RawSelect(ctx context.Context, sample interface{}, query string, payload ...interface{}) (interface{}, error) {
+	q, err := r.GetQuery(ctx)
+	if nil != err {
+		return nil, err
+	}
+
+	return q.RawAllCtx(ctx, sample, query, payload)
+}
+
+// RawExec execute query other than SELECT and return success status of the query
+func (r *Repository) RawExec(ctx context.Context, query string, payload ...interface{}) (bool, error) {
+	q, err := r.GetQuery(ctx)
+	if nil != err {
+		return false, err
+	}
+
+	return q.RawExecCtx(ctx, query, payload)
 }
 
 // FindAll find data by given conditions, order, limit and offset
