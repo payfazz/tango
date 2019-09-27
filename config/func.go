@@ -15,8 +15,8 @@ import (
 )
 
 var rds redis.RedisInterface
-var mdb, db *sqlx.DB
-var rdsOnce, mdbOnce, dbOnce sync.Once
+var mdb, db, sdb *sqlx.DB
+var rdsOnce, mdbOnce, dbOnce, sdbOnce sync.Once
 
 // Set is a function to append value to base config
 func Set(key string, value string) {
@@ -81,7 +81,7 @@ func GetMigrateDb() *sqlx.DB {
 	return mdb
 }
 
-// GetDB is a function to get DB instance
+// GetDB get DB instance
 func GetDb() *sqlx.DB {
 	dbOnce.Do(func() {
 		var err error
@@ -117,9 +117,50 @@ func GetDb() *sqlx.DB {
 	return db
 }
 
+// GetDB get slave DB instance
+func GetSlaveDb() *sqlx.DB {
+	sdbOnce.Do(func() {
+		var err error
+		var conn string
+		switch Get(ENV) {
+		case ENV_TESTING:
+			conn = fmt.Sprintf(
+				"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+				Get(TEST_DB_HOST),
+				Get(TEST_DB_PORT),
+				Get(TEST_DB_USER),
+				Get(TEST_DB_PASS),
+				Get(TEST_DB_NAME),
+			)
+		default:
+			conn = fmt.Sprintf(
+				"host=%s port=%s user=%s password=%s DB_SLAVEname=%s sslmode=disable",
+				Get(DB_SLAVE_HOST),
+				Get(DB_SLAVE_PORT),
+				Get(DB_SLAVE_USER),
+				Get(DB_SLAVE_PASS),
+				Get(DB_SLAVE_NAME),
+			)
+		}
+		sdb, err = sqlx.Connect("postgres", conn)
+		if nil != err {
+			panic(err)
+		}
+
+		sdb.SetMaxOpenConns(formatter.StringToInteger(Get(MAX_OPEN_CONNS)))
+		sdb.SetMaxIdleConns(formatter.StringToInteger(Get(MAX_IDLE_CONNS)))
+	})
+	return sdb
+}
+
 // GetQueryConfig is a function to get default query config
 func GetQueryConfig() fazzdb.Config {
 	return GetIfQueryConfig(I_QUERY_CONFIG)
+}
+
+// GetSlaveQueryConfig is a function to get default slave query config
+func GetSlaveQueryConfig() fazzdb.Config {
+	return GetIfQueryConfig(I_SLAVE_QUERY_CONFIG)
 }
 
 // SetVerboseQuery is a function to set verbose mode on fazzdb

@@ -23,6 +23,7 @@ github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5y
 github.com/golang/protobuf v1.3.2 h1:6nsPYzhq5kReh6QImI3k5qWzO4PEbvbIW2cwSfR/6xs=
 github.com/golang/protobuf v1.3.2/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
+github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/hpcloud/tail v1.0.0 h1:nfCOvKYfkgYP8hkirhJocXT2+zOD8yUNjXaWfTlyFKI=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/jmoiron/sqlx v1.2.0 h1:41Ip0zITnmWNR/vHV+S4m+VoUivnWY5E4OJfLZjCJMA=
@@ -65,6 +66,8 @@ github.com/payfazz/go-apt v0.6.0 h1:qKCFVyzbBQAKa7FBuTDK7DyFGVYjkgXYqor55Hvbumc=
 github.com/payfazz/go-apt v0.6.0/go.mod h1:+CybbsCz4QloXyxG99TDSm/syNxMEA1QJbZaP0cNmkw=
 github.com/payfazz/go-apt v0.9.1 h1:j0ZmJjCGJwWeLBLtPuvsm6QvQ3bBiPLJ9lg9y94XPMg=
 github.com/payfazz/go-apt v0.9.1/go.mod h1:oJzJgkd0nEMnjdfCXh+G5pBgtWZ09xO8F/pPZdQOl94=
+github.com/payfazz/go-apt v0.12.6 h1:KPljOB2/xkCqNEtP398QzlnYC7byb29OzobfFVqtIlk=
+github.com/payfazz/go-apt v0.12.6/go.mod h1:Oj5+4/6RMljH35WIsbxyYrTw34zDJ75G9PwPTGW4/X8=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4 h1:j0/j6gb1J8yElpROQtq3X8homJTUTXvmsYqVCogzX1c=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4/go.mod h1:pGgGdE8OMjA0auJIXfMtJxSdiix2m8uA9P/fbGGwosE=
 github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13 h1:wC1HW3Go+0Fug8xG29Mi2NTefS+kQjEmTAMEc0eQOQk=
@@ -83,6 +86,7 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/objx v0.2.0/go.mod h1:qt09Ya8vawLte6SNmTgCsAVtYtaKzEcn8ATUoHMkEqE=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
+github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/urfave/cli v1.21.0 h1:wYSSj06510qPIzGSua9ZqsncMmWE3Zr55KBERygyrxE=
 github.com/urfave/cli v1.21.0/go.mod h1:lxDj6qX9Q6lWQxIrbrT0nwecwUtRnhVZAJjJZrVUZZQ=
 github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c/go.mod h1:lB8K/P019DLNhemzwFU4jHLhdvlE6uDZjXFejJXr49I=

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"database/sql"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -22,10 +23,26 @@ var base = map[string]string{
 	DB_USER: "postgres",
 	// DB_PASS pass for DB
 	DB_PASS: "postgres",
+	// DB_SLAVE_HOST host for DB_SLAVE
+	DB_SLAVE_HOST: "localhost",
+	// DB_SLAVE_PORT port for DB_SLAVE
+	DB_SLAVE_PORT: "5432",
+	// DB_SLAVE_NAME name for DB_SLAVE
+	DB_SLAVE_NAME: "tango",
+	// DB_SLAVE_USER user for DB_SLAVE
+	DB_SLAVE_USER: "postgres",
+	// DB_SLAVE_PASS pass for DB_SLAVE
+	DB_SLAVE_PASS: "postgres",
 	// DB_MIGRATE_USER user for DB migrate
 	DB_MIGRATE_USER: "postgres",
 	// DB_MIGRATE_PASS pass for DB migrate
 	DB_MIGRATE_PASS: "postgres",
+	// FORCE_MIGRATE default: on
+	FORCE_MIGRATE: ON,
+	// MAX_OPEN_CONNS: MAX_OPEN_CONNS
+	MAX_OPEN_CONNS: "1024",
+	// MAX_IDLE_CONNS MAX_IDLE_CONNS
+	MAX_IDLE_CONNS: "512",
 	// REDIS_HOST host for redis, format: {host}:{port}
 	REDIS_HOST: "localhost:6379",
 	// REDIS_PASS pass for redis
@@ -34,18 +51,12 @@ var base = map[string]string{
 	PORT: ":8080",
 	// BASE_URL:
 	BASE_URL: "http://localhost:8080",
+	// DEBUG_LOG default: on
+	DEBUG_LOG: ON,
 	// THROTTLE_PREFIX default: throttle
 	THROTTLE_PREFIX: "throttle",
 	// THROTTLE_TRIGGER default: on
 	THROTTLE_TRIGGER: ON,
-	// FORCE_MIGRATE default: on
-	FORCE_MIGRATE: ON,
-	// DEBUG_LOG default: on
-	DEBUG_LOG: ON,
-	// MAX_OPEN_CONNS: MAX_OPEN_CONNS
-	MAX_OPEN_CONNS: "1024",
-	// MAX_IDLE_CONNS MAX_IDLE_CONNS
-	MAX_IDLE_CONNS: "512",
 
 	// TEST
 	// TEST_DB_HOST localhost
@@ -75,6 +86,17 @@ var baseInterface = map[string]interface{}{
 		Offset:          0,
 		Lock:            fazzdb.LO_NONE,
 		DevelopmentMode: Get(ENV) != ENV_PRODUCTION,
+	},
+	// I_SLAVE_QUERY_CONFIG conf for slave DB limit, offset and lock
+	I_SLAVE_QUERY_CONFIG: fazzdb.Config{
+		Limit:           20,
+		Offset:          0,
+		Lock:            fazzdb.LO_NONE,
+		DevelopmentMode: Get(ENV) != ENV_PRODUCTION,
+		Opts: &sql.TxOptions{
+			Isolation: sql.LevelDefault,
+			ReadOnly:  true,
+		},
 	},
 	// I_READ_TIMEOUT read timeout
 	I_READ_TIMEOUT: 5 * time.Minute,

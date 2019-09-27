@@ -8,7 +8,7 @@ require (
 	github.com/lib/pq v1.2.0
 	github.com/mattn/go-sqlite3 v1.11.0 // indirect
 	github.com/nats-io/jwt v0.2.12 // indirect
-	github.com/payfazz/go-apt v0.9.1
+	github.com/payfazz/go-apt v0.12.6
 	github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13 // indirect
 	github.com/payfazz/go-router v0.0.0-20190720102111-42516499ed6e // indirect
 	github.com/pkg/errors v0.8.1
