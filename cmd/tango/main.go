@@ -11,7 +11,7 @@ func main() {
 	fazzdb.Migrate(config.GetMigrateDb(),
 		"go-backend",
 		config.ForceMigrate(),
-		true,
+		config.RunSeeder(),
 		migration.Sequence...,
 	)
 	config.SetVerboseQuery()

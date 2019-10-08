@@ -219,6 +219,11 @@ func ForceMigrate() bool {
 	return Get(ENV) != ENV_PRODUCTION && Get(FORCE_MIGRATE) == ON
 }
 
+// RunSeeder only run seeder on development environment
+func RunSeeder() bool {
+	return Get(ENV) == ENV_DEVELOPMENT
+}
+
 // UseThrottle get throttle trigger status
 func UseThrottle() bool {
 	return Get(THROTTLE_TRIGGER) == ON
