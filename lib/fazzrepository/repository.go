@@ -67,7 +67,7 @@ func (r *Repository) RawSelect(ctx context.Context, sample interface{}, query st
 		return nil, err
 	}
 
-	return q.RawAllCtx(ctx, sample, query, payload)
+	return q.RawAllCtx(ctx, sample, query, payload...)
 }
 
 // RawExec execute query other than SELECT and return success status of the query
@@ -77,7 +77,7 @@ func (r *Repository) RawExec(ctx context.Context, query string, payload ...inter
 		return false, err
 	}
 
-	return q.RawExecCtx(ctx, query, payload)
+	return q.RawExecCtx(ctx, query, payload...)
 }
 
 // FindAll find data by given conditions, order, limit and offset
