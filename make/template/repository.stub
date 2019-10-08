@@ -56,7 +56,17 @@ func (r *{{camelModel}}Repository) Find(ctx context.Context, id {{idDataType}}) 
 // Create insert data by given model
 func (r *{{camelModel}}Repository) Create(ctx context.Context, m fazzdb.ModelInterface) (*{{idDataType}}, error) {
 	result, err := r.base.Create(ctx, m)
+	{{uuid-tag}}
+	if nil != err {
+        return nil, err
+    }
+
+    id := formatter.SliceUint8ToString(result.([]uint8))
+    return &id, err
+    {{end-uuid-tag}}
+    {{non-uuid-tag}}
 	return result.(*{{idDataType}}), err
+	{{end-non-uuid-tag}}
 }
 
 // Update update data by given model

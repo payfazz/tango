@@ -19,13 +19,15 @@ const (
 	QUERY_STUB_FILE                = `./make/template/query.stub`
 	SERVICE_STUB_FILE              = `./make/template/service.stub`
 
-	QUERY_TAG   = `qu-tag`
-	COMMAND_TAG = `co-tag`
-	READ_TAG    = `re-tag`
-	FIND_TAG    = `fi-tag`
-	CREATE_TAG  = `cr-tag`
-	UPDATE_TAG  = `up-tag`
-	DELETE_TAG  = `de-tag`
+	QUERY_TAG    = `qu-tag`
+	COMMAND_TAG  = `co-tag`
+	READ_TAG     = `re-tag`
+	FIND_TAG     = `fi-tag`
+	CREATE_TAG   = `cr-tag`
+	UPDATE_TAG   = `up-tag`
+	DELETE_TAG   = `de-tag`
+	UUID_TAG     = `uuid-tag`
+	NON_UUID_TAG = `non-uuid-tag`
 )
 
 var dirFileMode = os.FileMode(0755)
@@ -51,6 +53,7 @@ func GenerateStubs(structure *Structure, baseDir string) {
 		unused:    []string{},
 	}
 
+	baseMeta.parseIdType(structure.Type)
 	baseMeta.parseAction(structure.Action)
 
 	baseMeta.generateFile("model", "model", MODEL_STUB_FILE)
@@ -76,6 +79,18 @@ type meta struct {
 	old       []string
 	new       []string
 	unused    []string
+}
+
+func (m *meta) parseIdType(idType string) {
+	if idType == TYPE_UUID {
+		m.old = append(m.old, fmt.Sprintf("{{%s}}", UUID_TAG), fmt.Sprintf("{{end-%s}}", UUID_TAG))
+		m.new = append(m.new, "", "")
+		m.unused = append(m.unused, NON_UUID_TAG)
+	} else {
+		m.old = append(m.old, fmt.Sprintf("{{%s}}", NON_UUID_TAG), fmt.Sprintf("{{end-%s}}", NON_UUID_TAG))
+		m.new = append(m.new, "", "")
+		m.unused = append(m.unused, UUID_TAG)
+	}
 }
 
 func (m *meta) parseAction(action *Action) {
