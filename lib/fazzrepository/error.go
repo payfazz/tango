@@ -12,3 +12,15 @@ func (e *EmptyResultError) Error() string {
 func NewEmptyResultError() error {
 	return &EmptyResultError{}
 }
+
+// IsEmptyResult check if instance of error is EmptyResultError
+func IsEmptyResult(it interface{}) bool {
+	switch it.(type) {
+	case EmptyResultError:
+		return true
+	case *EmptyResultError:
+		return true
+	default:
+		return false
+	}
+}
