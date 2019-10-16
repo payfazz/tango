@@ -57,7 +57,6 @@ func GenerateStubs(structure *Structure, baseDir string) {
 	baseMeta.parseAction(structure.Action)
 
 	baseMeta.generateFile("model", "model", MODEL_STUB_FILE)
-	baseMeta.generateFile("repository", "interface", REPOSITORY_INTERFACE_STUB_FILE)
 	baseMeta.generateFile("repository", "postgres", REPOSITORY_STUB_FILE)
 
 	if structure.Action.IsCommandNeeded() {
