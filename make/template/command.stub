@@ -5,87 +5,82 @@ import (
 	"errors"
 )
 
-// {{model}}CommandInterface contract for sending command to {{camelModel}} table
-type {{model}}CommandInterface interface {
-	{{cr-tag}}Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error){{end-cr-tag}}
-	{{up-tag}}Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error){{end-up-tag}}
-	{{de-tag}}Delete(ctx context.Context, id {{idDataType}}) (bool, error){{end-de-tag}}
-	{{cr-tag}}ModelCreate(ctx context.Context, m *model.{{model}}) (*{{idDataType}}, error){{end-cr-tag}}
-	{{up-tag}}ModelUpdate(ctx context.Context, m *model.{{model}}) (bool, error){{end-up-tag}}
-	{{de-tag}}ModelDelete(ctx context.Context, m *model.{{model}}) (bool, error){{end-de-tag}}
+// {{.Model}}CommandInterface contract for sending command to {{.CamelModel}} table
+type {{.Model}}CommandInterface interface {
+	{{if .Action.Create}} Create(ctx context.Context, payload *data.PayloadCreate{{.Model}}) (*{{.DataType}}, error) {{end}}
+	{{if .Action.Update}} Update(ctx context.Context, payload *data.PayloadUpdate{{.Model}}) (bool, error) {{end}}
+	{{if .Action.Delete}} Delete(ctx context.Context, id {{.DataType}}) (bool, error) {{end}}
+	{{if .Action.Create}} ModelCreate(ctx context.Context, m *model.{{.Model}}) (*{{.DataType}}, error) {{end}}
+	{{if .Action.Update}} ModelUpdate(ctx context.Context, m *model.{{.Model}}) (bool, error) {{end}}
+	{{if .Action.Delete}} ModelDelete(ctx context.Context, m *model.{{.Model}}) (bool, error) {{end}}
 }
 
-type {{camelModel}}Command struct {
-	repository repository.{{model}}RepositoryInterface
+type {{.CamelModel}}Command struct {
+	repository repository.{{.Model}}RepositoryInterface
 }
 
-{{cr-tag}}
-// Create is a function to create new {{model}} model and push it to database
-func (c *{{camelModel}}Command) Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error) {
-	m := model.{{model}}Model()
+{{if .Action.Create}}
+// Create is a function to create new {{.Model}} model and push it to database
+func (c *{{.CamelModel}}Command) Create(ctx context.Context, payload *data.PayloadCreate{{.Model}}) (*{{.DataType}}, error) {
+	m := model.{{.Model}}Model()
 
-	{{modelFields}}
+	{{range .Fields}} {{printf "m.%s = payload.%s\n" .PascalName .PascalName}} {{end}}
 
 	return c.ModelCreate(ctx, m)
 }
-{{end-cr-tag}}
-
-{{up-tag}}
-// Update is a function to update {{model}} model and push it to database
-func (c *{{camelModel}}Command) Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error) {
+{{end}}
+{{if .Action.Update}}
+// Update is a function to update {{.Model}} model and push it to database
+func (c *{{.CamelModel}}Command) Update(ctx context.Context, payload *data.PayloadUpdate{{.Model}}) (bool, error) {
     m, err := c.repository.Find(ctx, payload.Id)
 	if nil != err {
 		return false, err
 	}
 	if nil == m {
-		return false, errors.New("{{camelModel}} not found")
+		return false, errors.New("{{.CamelModel}} not found")
 	}
 
-	{{modelFields}}
+	{{range .Fields}} {{printf "m.%s = payload.%s\n" .PascalName .PascalName}} {{end}}
 
 	return c.ModelUpdate(ctx, m)
 }
-{{end-up-tag}}
-
-{{de-tag}}
-// Delete is a function to delete {{camelModel}} by id
-func (c *{{camelModel}}Command) Delete(ctx context.Context, id {{idDataType}}) (bool, error) {
+{{end}}
+{{if .Action.Delete}}
+// Delete is a function to delete {{.CamelModel}} by id
+func (c *{{.CamelModel}}Command) Delete(ctx context.Context, id {{.DataType}}) (bool, error) {
 	m, err := c.repository.Find(ctx, id)
 	if nil != err {
 		return false, err
 	}
 	if nil == m {
-		return false, errors.New("{{camelModel}} not found")
+		return false, errors.New("{{.CamelModel}} not found")
 	}
 
 	return c.ModelDelete(ctx, m)
 }
-{{end-de-tag}}
-
-{{cr-tag}}
-// ModelCreate create directly using given {{camelModel}}Model
-func (c *{{camelModel}}Command) ModelCreate(ctx context.Context, m *model.{{model}}) (*{{idDataType}}, error) {
+{{end}}
+{{if .Action.Create}}
+// ModelCreate create directly using given {{.CamelModel}}Model
+func (c *{{.CamelModel}}Command) ModelCreate(ctx context.Context, m *model.{{.Model}}) (*{{.DataType}}, error) {
 	return c.repository.Create(ctx, m)
 }
-{{end-cr-tag}}
-
-{{up-tag}}
-// ModelUpdate update directly using given {{camelModel}}Model
-func (c *{{camelModel}}Command) ModelUpdate(ctx context.Context, m *model.{{model}}) (bool, error) {
+{{end}}
+{{if .Action.Update}}
+// ModelUpdate update directly using given {{.CamelModel}}Model
+func (c *{{.CamelModel}}Command) ModelUpdate(ctx context.Context, m *model.{{.Model}}) (bool, error) {
 	return c.repository.Update(ctx, m)
 }
-{{end-up-tag}}
-
-{{de-tag}}
-// ModelDelete delete directly using given {{camelModel}}Model
-func (c *{{camelModel}}Command) ModelDelete(ctx context.Context, m *model.{{model}}) (bool, error) {
+{{end}}
+{{if .Action.Delete}}
+// ModelDelete delete directly using given {{.CamelModel}}Model
+func (c *{{.CamelModel}}Command) ModelDelete(ctx context.Context, m *model.{{.Model}}) (bool, error) {
 	return c.repository.Delete(ctx, m)
 }
-{{end-de-tag}}
+{{end}}
 
-// New{{model}}Command constructor of {{camelModel}} command
-func New{{model}}Command() {{model}}CommandInterface {
-	return &{{camelModel}}Command{
-		repository: repository.New{{model}}Repository(),
+// New{{.Model}}Command constructor of {{.CamelModel}} command
+func New{{.Model}}Command() {{.Model}}CommandInterface {
+	return &{{.CamelModel}}Command{
+		repository: repository.New{{.Model}}Repository(),
 	}
 }

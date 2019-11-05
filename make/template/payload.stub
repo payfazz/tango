@@ -1,12 +1,12 @@
 package data
 
-// PayloadCreate{{model}} handle data when creating new {{camelModel}}
-type PayloadCreate{{model}} struct {
-    {{jsonFields}}
+// PayloadCreate{{.Model}} handle data when creating new {{.CamelModel}}
+type PayloadCreate{{.Model}} struct {
+    {{range .Fields}} {{printf "%s %s `json:\"%s\"`\n" .PascalName .Type .CamelName }} {{end}}
 }
 
-// PayloadUpdate{{model}} handle data when updating {{camelModel}}
-type PayloadUpdate{{model}} struct {
-    PayloadCreate{{model}}
-	Id {{idDataType}} `json:"id"`
+// PayloadUpdate{{.Model}} handle data when updating {{.CamelModel}}
+type PayloadUpdate{{.Model}} struct {
+    PayloadCreate{{.Model}}
+	Id {{.DataType}} `json:"id"`
 }

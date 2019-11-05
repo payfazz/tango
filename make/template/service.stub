@@ -1,62 +1,58 @@
-package {{domain}}
+package {{.LowerModel}}
 
 import (
 	"context"
 )
 
-// ServiceInterface contract for {{camelModel}} service
+// ServiceInterface contract for {{.CamelModel}} service
 type ServiceInterface interface {
-	{{re-tag}}FindAll(ctx context.Context) ([]*model.{{model}}, error){{end-re-tag}}
-	{{fi-tag}}Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error){{end-fi-tag}}
-	{{cr-tag}}Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error){{end-cr-tag}}
-	{{up-tag}}Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error){{end-up-tag}}
-	{{de-tag}}Delete(ctx context.Context, id {{idDataType}}) (bool, error){{end-de-tag}}
+	{{if .Action.Read}}FindAll(ctx context.Context) ([]*model.{{.Model}}, error) {{end}}
+	{{if .Action.Find}}Find(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {{end}}
+	{{if .Action.Create}}Create(ctx context.Context, payload *data.PayloadCreate{{.Model}}) (*{{.DataType}}, error) {{end}}
+	{{if .Action.Update}}Update(ctx context.Context, payload *data.PayloadUpdate{{.Model}}) (bool, error) {{end}}
+	{{if .Action.Delete}}Delete(ctx context.Context, id {{.DataType}}) (bool, error) {{end}}
 }
 
 type service struct {
-	{{qu-tag}}query   query.{{model}}QueryInterface{{end-qu-tag}}
-	{{co-tag}}command command.{{model}}CommandInterface{{end-co-tag}}
+	{{if .Action.IsQueryNeeded}}query   query.{{.Model}}QueryInterface {{end}}
+	{{if .Action.IsCommandNeeded}}command command.{{.Model}}CommandInterface {{end}}
 }
 
-{{re-tag}}
-// FindAll service for getting all {{camelModel}}
-func (s *service) FindAll(ctx context.Context) ([]*model.{{model}}, error) {
+{{if .Action.Read}}
+// FindAll service for getting all {{.CamelModel}}
+func (s *service) FindAll(ctx context.Context) ([]*model.{{.Model}}, error) {
 	return s.query.All(ctx)
 }
-{{end-re-tag}}
-
-{{fi-tag}}
-// Find service for getting {{camelModel}} by given id
-func (s *service) Find(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
+{{end}}
+{{if .Action.Find}}
+// Find service for getting {{.CamelModel}} by given id
+func (s *service) Find(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {
 	return s.query.ById(ctx, id)
 }
-{{end-fi-tag}}
-
-{{cr-tag}}
-// Create service for creating {{camelModel}} by given payload
-func (s *service) Create(ctx context.Context, payload *data.PayloadCreate{{model}}) (*{{idDataType}}, error) {
+{{end}}
+{{if .Action.Create}}
+// Create service for creating {{.CamelModel}} by given payload
+func (s *service) Create(ctx context.Context, payload *data.PayloadCreate{{.Model}}) (*{{.DataType}}, error) {
 	return s.command.Create(ctx, payload)
 }
-{{end-cr-tag}}
-
-{{up-tag}}
-// Update service for updating {{camelModel}} by given payload
-func (s *service) Update(ctx context.Context, payload *data.PayloadUpdate{{model}}) (bool, error) {
+{{end}}
+{{if .Action.Update}}
+// Update service for updating {{.CamelModel}} by given payload
+func (s *service) Update(ctx context.Context, payload *data.PayloadUpdate{{.Model}}) (bool, error) {
 	return s.command.Update(ctx, payload)
 }
-{{end-up-tag}}
-
-{{de-tag}}
-// Delete service for removing {{camelModel}} by given id
-func (s *service) Delete(ctx context.Context, id {{idDataType}}) (bool, error) {
+{{end}}
+{{if .Action.Delete}}
+// Delete service for removing {{.CamelModel}} by given id
+func (s *service) Delete(ctx context.Context, id {{.DataType}}) (bool, error) {
 	return s.command.Delete(ctx, id)
 }
-{{end-de-tag}}
+{{end}}
 
-// New{{model}}Service constructor of {{camelModel}} service
-func New{{model}}Service() ServiceInterface {
+// New{{.Model}}Service constructor of {{.CamelModel}} service
+func New{{.Model}}Service() ServiceInterface {
 	return &service{
-		{{qu-tag}}query:   query.New{{model}}Query(),{{end-qu-tag}}
-		{{co-tag}}command: command.New{{model}}Command(),{{end-co-tag}}
+		{{if .Action.IsQueryNeeded}}query: query.New{{.Model}}Query(), {{end}}
+		{{if .Action.IsCommandNeeded}}command: command.New{{.Model}}Command(), {{end}}
 	}
 }

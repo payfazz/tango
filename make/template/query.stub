@@ -4,33 +4,32 @@ import (
 	"context"
 )
 
-// {{model}}QueryInterface contract for sending query to {{camelModel}} table
-type {{model}}QueryInterface interface {
-	{{re-tag}}All(ctx context.Context) ([]*model.{{model}}, error){{end-re-tag}}
-	{{fi-tag}}ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error){{end-fi-tag}}
+// {{.Model}}QueryInterface contract for sending query to {{.CamelModel}} table
+type {{.Model}}QueryInterface interface {
+	{{if .Action.Read}} All(ctx context.Context) ([]*model.{{.Model}}, error) {{end}}
+	{{if .Action.Find}} ById(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {{end}}
 }
 
-type {{camelModel}}Query struct {
-	repository repository.{{model}}RepositoryInterface
+type {{.CamelModel}}Query struct {
+	repository repository.{{.Model}}RepositoryInterface
 }
 
-{{re-tag}}
-// All get data from {{camelModel}} without any conditions and orders
-func (q *{{camelModel}}Query) All(ctx context.Context) ([]*model.{{model}}, error) {
+{{if .Action.Read}}
+// All get data from {{.CamelModel}} without any conditions and orders
+func (q *{{.CamelModel}}Query) All(ctx context.Context) ([]*model.{{.Model}}, error) {
 	return q.repository.FindAll(ctx, nil, nil, 0, 0)
 }
-{{end-re-tag}}
-
-{{fi-tag}}
-// ById get one data from {{camelModel}} by given id
-func (q *{{camelModel}}Query) ById(ctx context.Context, id {{idDataType}}) (*model.{{model}}, error) {
+{{end}}
+{{if .Action.Find}}
+// ById get one data from {{.CamelModel}} by given id
+func (q *{{.CamelModel}}Query) ById(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {
 	return q.repository.Find(ctx, id)
 }
-{{end-fi-tag}}
+{{end}}
 
-// New{{model}}Query constructor of {{camelModel}} query
-func New{{model}}Query() {{model}}QueryInterface {
-	return &{{camelModel}}Query{
-		repository: repository.New{{model}}Repository(),
+// New{{.Model}}Query constructor of {{.CamelModel}} query
+func New{{.Model}}Query() {{.Model}}QueryInterface {
+	return &{{.CamelModel}}Query{
+		repository: repository.New{{.Model}}Repository(),
 	}
 }
