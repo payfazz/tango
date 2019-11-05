@@ -15,7 +15,8 @@ var makeScripts = `#!/bin/sh
 
 set -x
 
-goimports -w ./internal`
+goimports -w ./internal
+go fmt ./internal/...`
 
 // MakeCommand defines cli.Command for make command
 func MakeCommand() cli.Command {

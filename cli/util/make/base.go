@@ -3,6 +3,8 @@ package make
 import (
 	"fmt"
 	"strings"
+
+	"github.com/payfazz/tango/cli/util"
 )
 
 // StructureMap handle overall structure mapping
@@ -23,9 +25,18 @@ type Structure struct {
 	Subdomains []*Structure `yaml:"subdomains"`
 }
 
+func (s *Structure) CamelModel() string {
+	return util.SnakeToCamelCase(s.Model)
+}
+
+func (s *Structure) LowerModel() string {
+	return strings.ToLower(s.Model)
+}
+
 // Generate generate current structure and all its child
 func (s *Structure) Generate(baseDir string) {
 	GenerateStubs(s, baseDir)
+	//GenerateTemplate(s, baseDir)
 
 	domain := strings.ToLower(s.Model)
 	for _, c := range s.Subdomains {
@@ -37,6 +48,14 @@ func (s *Structure) Generate(baseDir string) {
 type Field struct {
 	Name string `yaml:"name"`
 	Type string `yaml:"type"`
+}
+
+func (f *Field) PascalName() string {
+	return util.SnakeToPascalCase(f.Name)
+}
+
+func (f *Field) CamelName() string {
+	return util.SnakeToCamelCase(f.Name)
 }
 
 // Action handle functionality that will be generated
