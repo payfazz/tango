@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"github.com/payfazz/go-apt/pkg/fazzrouter"
-	"github.com/payfazz/tango/config"
-	"github.com/payfazz/tango/http/app"
 	"github.com/payfazz/tango/http/container"
 	"github.com/payfazz/tango/http/middleware"
 	"github.com/payfazz/tango/http/route/collection"
@@ -13,11 +11,11 @@ import (
 
 // Compile is a function to compile the data
 func Compile(services *container.ServiceContainer) http.HandlerFunc {
-	rds := config.GetRedis()
+	// rds := config.GetRedis()
 
 	r := fazzrouter.BaseRoute()
 	r.Use(
-		app.New(rds),
+		// app.New(rds),
 		middleware.Cors(),
 	)
 	collection.RouteBase(r, services)
