@@ -3,6 +3,8 @@ package route
 import (
 	"net/http"
 
+	"github.com/payfazz/go-apt/pkg/fazzmonitor/prometheusclient"
+
 	"github.com/payfazz/go-apt/pkg/fazzrouter"
 	"github.com/payfazz/tango/config"
 	"github.com/payfazz/tango/http/app"
@@ -19,6 +21,9 @@ func Compile(services *container.ServiceContainer) http.HandlerFunc {
 	r.Use(
 		app.New(rds),
 		middleware.Cors(),
+		prometheusclient.RequestCounter(),
+		prometheusclient.RequestDuration(),
+		prometheusclient.StatusCounter(),
 	)
 	collection.RouteBase(r, services)
 	collection.RouteVersion1(r, services)
