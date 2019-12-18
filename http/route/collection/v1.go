@@ -6,5 +6,5 @@ import (
 )
 
 // RouteVersion1 is a router version v1
-func RouteVersion1(r *fazzrouter.Route, services *container.ServiceContainer) {
+func RouteVersion1(r *fazzrouter.Route, app *container.AppContainer) {
 }

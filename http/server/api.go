@@ -29,14 +29,14 @@ func (as *ApiServer) runPrometheus() {
 
 // Serve is a function to serve the server
 func (as *ApiServer) Serve() {
-	services := container.CreateServiceContainer()
+	app := container.CreateAppContainer()
 
 	s := &http.Server{
 		Addr:         config.Get(config.PORT),
 		ReadTimeout:  config.GetIfDuration(config.I_READ_TIMEOUT),
 		WriteTimeout: config.GetIfDuration(config.I_WRITE_TIMEOUT),
 		IdleTimeout:  config.GetIfDuration(config.I_IDLE_TIMEOUT),
-		Handler:      route.Compile(services),
+		Handler:      route.Compile(app),
 	}
 
 	serverErrCh := make(chan error)
