@@ -6,7 +6,6 @@ import (
 
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 	"github.com/payfazz/go-apt/pkg/fazzkv/redis"
-	"github.com/payfazz/tango/config"
 )
 
 type appKeyType struct{}
@@ -20,17 +19,31 @@ type App struct {
 	Token     string
 }
 
-// New is a function that as a http handler
-func New(rds redis.RedisInterface) func(http.HandlerFunc) http.HandlerFunc {
+// Redis is a function that construct handler to append redis into context
+func Redis(rds redis.RedisInterface) func(next http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
-			queryDb := fazzdb.QueryDb(config.GetDb(), config.GetQueryConfig())
+			ctx := redis.NewRedisContext(r.Context(), rds)
+			next(w, r.WithContext(ctx))
+		}
+	}
+}
 
-			ctx := r.Context()
-			ctx = NewAppContext(ctx)
-			ctx = redis.NewRedisContext(ctx, rds)
-			ctx = fazzdb.NewQueryContext(ctx, queryDb)
+// DB is a function that construct handler to append queryDb into context
+func DB(queryDb *fazzdb.Query) func(next http.HandlerFunc) http.HandlerFunc {
+	return func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			ctx := fazzdb.NewQueryContext(r.Context(), queryDb)
+			next(w, r.WithContext(ctx))
+		}
+	}
+}
 
+// New is a function that construct handler for AppContext
+func New() func(http.HandlerFunc) http.HandlerFunc {
+	return func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			ctx := NewAppContext(r.Context())
 			next(w, r.WithContext(ctx))
 		}
 	}

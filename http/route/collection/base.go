@@ -7,6 +7,6 @@ import (
 )
 
 // RouteBase is a base router
-func RouteBase(r *fazzrouter.Route, services *container.ServiceContainer) {
+func RouteBase(r *fazzrouter.Route, app *container.AppContainer) {
 	r.Get("ping", base.Ping())
 }

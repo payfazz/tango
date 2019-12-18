@@ -5,6 +5,6 @@ type ServiceContainer struct {
 }
 
 // CreateServiceContainer is a constructor for creating all services available in the app
-func CreateServiceContainer() *ServiceContainer {
+func CreateServiceContainer(repositories *RepositoryContainer, clients *ClientContainer) *ServiceContainer {
 	return &ServiceContainer{}
 }
