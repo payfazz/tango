@@ -7,58 +7,52 @@ import (
 	"text/template"
 )
 
-const (
-	MODEL_STUB_FILE      = `./make/template/model.stub`
-	REPOSITORY_STUB_FILE = `./make/template/repository.stub`
-	PAYLOAD_STUB_FILE    = `./make/template/payload.stub`
-	COMMAND_STUB_FILE    = `./make/template/command.stub`
-	QUERY_STUB_FILE      = `./make/template/query.stub`
-	SERVICE_STUB_FILE    = `./make/template/service.stub`
-)
-
-const (
-	TYPE_UUID           = `Uuid`
-	TYPE_AUTO_INCREMENT = `AutoIncrement`
-	TYPE_PLAIN          = `Plain`
-)
-
 var dirFileMode = os.FileMode(0744)
 
-// GenerateStubs generate all required stubs for CRUD
-func GenerateStubs(structure *Structure, baseDir string) {
-	domain := strings.ToLower(structure.Model)
-
+// GenerateDomainStubs generate all required stubs for domain service
+func GenerateDomainStubs(structure *DomainStructure, baseDir string) {
 	// Make root directory
-	dir := fmt.Sprintf("%s/%s", baseDir, domain) // ex: internal/domain/author
+	dir := fmt.Sprintf("%s/%s", baseDir, strings.ToLower(structure.Domain)) // ex: internal/domain/author
 	err := os.MkdirAll(dir, dirFileMode)
 	if nil != err {
 		panic(err)
 	}
 
-	generateFile(structure, dir, "model", "model", MODEL_STUB_FILE)
-	generateFile(structure, dir, "repository", "repository", REPOSITORY_STUB_FILE)
+	generateFile(structure, dir, "service", SERVICE_STUB_FILE)
+}
+
+// GenerateModelStubs generate all required stubs for CRUD
+func GenerateModelStubs(structure *ModelStructure, baseDir string) {
+	modelName := strings.ToLower(structure.Name)
+
+	// Make root directory
+	dir := fmt.Sprintf("%s/%s", baseDir, modelName) // ex: internal/domain/inventory/author
+	err := os.MkdirAll(dir, dirFileMode)
+	if nil != err {
+		panic(err)
+	}
+
+	generateFile(structure, dir, "model", MODEL_STUB_FILE)
+	generateFile(structure, dir, "repository", REPOSITORY_STUB_FILE)
 
 	if structure.Action.IsCommandNeeded() {
-		generateFile(structure, dir, "data", "payload", PAYLOAD_STUB_FILE)
-		generateFile(structure, dir, "command", "command", COMMAND_STUB_FILE)
+		generateFile(structure, dir, "payload", PAYLOAD_STUB_FILE)
+		generateFile(structure, dir, "command", COMMAND_STUB_FILE)
 	}
 
 	if structure.Action.IsQueryNeeded() {
-		generateFile(structure, dir, "query", "query", QUERY_STUB_FILE)
+		generateFile(structure, dir, "query", QUERY_STUB_FILE)
 	}
 
-	if structure.Action.IsQueryNeeded() || structure.Action.IsCommandNeeded() {
-		generateFile(structure, dir, "", "service", SERVICE_STUB_FILE)
+	dashboardDir := fmt.Sprintf("%s/%s", DASHBOARD_DIR, strings.ToLower(structure.Name))
+	if structure.Action.IsCommandNeeded() || structure.Action.IsCommandNeeded() {
+		generateFile(structure, dashboardDir, "dashboard", DASHBOARD_STUB_FILE)
 	}
 }
 
-func generateFile(structure *Structure, baseDir string, prefix string, fileName string, stubPath string) {
+func generateFile(structure interface{}, baseDir string, fileName string, stubPath string) {
 	// Make dir and file
-	insideDir := fmt.Sprintf("%s", baseDir) // ex: internal/domain/author
-	if "" != insideDir {
-		insideDir = fmt.Sprintf("%s/%s", baseDir, prefix) // ex: internal/domain/author/model
-	}
-	generatedFile := fmt.Sprintf("%s/%s.go", insideDir, fileName) // ex: internal/domain/author/model/model.go
+	generatedFile := fmt.Sprintf("%s/%s.go", baseDir, fileName) // ex: internal/domain/inventory/author/model.go
 
 	_, err := os.Stat(generatedFile)
 	if !os.IsNotExist(err) {
@@ -66,7 +60,7 @@ func generateFile(structure *Structure, baseDir string, prefix string, fileName 
 		return
 	}
 
-	err = os.MkdirAll(insideDir, dirFileMode)
+	err = os.MkdirAll(baseDir, dirFileMode)
 	if nil != err {
 		panic(err)
 	}

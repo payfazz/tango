@@ -19,65 +19,66 @@ const:
     float32ptr: &FLOAT32_PTR "*float32"
     float64ptr: &FLOAT64_PTR "*float64"
 structures:
-  - model: Book # model must be in PascalCase
-    table: books # Exact table name in database
-    idType: *UUID
-    idDataType: *STRING
-    timestamps: true # true | false
-    softDeletes: false # true | false
-    fields: # name must be in snake_case
-      - name: author_id
-        type: *INT64_PTR
-      - name: name
-        type: *STRING
-      - name: published_at
-        type: *TIME
-    action:
-      create: true
-      read: true
-      find: true
-      update: true
-      delete: true
-    subdomains:
-      - model: Publisher
-        table: publishers
-        idType: *UUID
-        idDataType: *STRING
-        timestamps: true
-        softDeletes: true
-        fields:
-          - name: book_id
-            type: *STRING_PTR
-          - name: name
-            type: *STRING
-          - name: founded_at
-            type: *TIME
-        action:
-          create: false
-          read: false
-          find: false
-          update: true
-          delete: false
-  - model: Author
-    table: authors
-    idType: *AUTO_INCREMENT
-    idDataType: *INT64
-    timestamps: true
-    softDeletes: true
-    fields:
-      - name: name
-        type: *STRING
-      - name: country
-        type: *STRING
-      - name: age
-        type: *INT
-      - name: address
-        type: *STRING
-      - name: publisher_name
-        type: *STRING
-    action:
-      create: true
-      read: true
-      find: true
-      update: false
-      delete: false
+  - domain: Inventory # domain must be in PascalCase
+    models:
+    - name: Book # model must be in PascalCase
+      table: books # Exact table name in database
+      idType: *UUID
+      idDataType: *STRING
+      timestamps: true # true | false
+      softDeletes: false # true | false
+      fields: # name must be in snake_case
+        - name: author_id
+          type: *INT64_PTR
+        - name: name
+          type: *STRING
+        - name: published_at
+          type: *TIME
+      action:
+        create: true
+        read: true
+        find: true
+        update: true
+        delete: true
+    - name: Publisher
+      table: publishers
+      idType: *UUID
+      idDataType: *STRING
+      timestamps: true
+      softDeletes: true
+      fields:
+        - name: book_id
+          type: *STRING_PTR
+        - name: name
+          type: *STRING
+        - name: founded_at
+          type: *TIME
+      action:
+        create: false
+        read: false
+        find: false
+        update: true
+        delete: false
+    - name: Author
+      table: authors
+      idType: *AUTO_INCREMENT
+      idDataType: *INT64
+      timestamps: true
+      softDeletes: true
+      fields:
+        - name: name
+          type: *STRING
+        - name: country
+          type: *STRING
+        - name: age
+          type: *INT
+        - name: address
+          type: *STRING
+        - name: publisher_name
+          type: *STRING
+      action:
+        create: true
+        read: true
+        find: true
+        update: false
+        delete: false
