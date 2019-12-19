@@ -9,39 +9,55 @@ import (
 
 // StructureMap handle overall structure mapping
 type StructureMap struct {
-	Structures []*Structure `yaml:"structures"`
+	Structures []*DomainStructure `yaml:"structures"`
 }
 
-// Structure handle structure.yaml mapping
-type Structure struct {
-	Model      string       `yaml:"model"`
-	Table      string       `yaml:"table"`
-	Type       string       `yaml:"idType"`
-	DataType   string       `yaml:"idDataType"`
-	Timestamps bool         `yaml:"timestamps"`
-	SoftDelete bool         `yaml:"softDeletes"`
-	Fields     []*Field     `yaml:"fields"`
-	Action     *Action      `yaml:"action"`
-	Subdomains []*Structure `yaml:"subdomains"`
+// DomainStructure handle structure.yaml mapping for domains
+type DomainStructure struct {
+	Domain string            `yaml:"domain"`
+	Models []*ModelStructure `yaml:"models"`
 }
 
-func (s *Structure) CamelModel() string {
-	return util.SnakeToCamelCase(s.Model)
+func (d *DomainStructure) CamelDomain() string {
+	return util.SnakeToCamelCase(d.Domain)
 }
 
-func (s *Structure) LowerModel() string {
-	return strings.ToLower(s.Model)
+func (d *DomainStructure) LowerDomain() string {
+	return strings.ToLower(d.Domain)
+}
+
+func (d *DomainStructure) Generate(baseDir string) {
+	GenerateDomainStubs(d, baseDir)
+
+	for _, model := range d.Models {
+		modelDir := fmt.Sprintf("%s/%s", baseDir, d.Domain)
+		model.Generate(modelDir)
+	}
+}
+
+// ModelStructure handle structure.yaml mapping for model inside domains
+type ModelStructure struct {
+	Name       string   `yaml:"name"`
+	Table      string   `yaml:"table"`
+	Type       string   `yaml:"idType"`
+	DataType   string   `yaml:"idDataType"`
+	Timestamps bool     `yaml:"timestamps"`
+	SoftDelete bool     `yaml:"softDeletes"`
+	Fields     []*Field `yaml:"fields"`
+	Action     *Action  `yaml:"action"`
+}
+
+func (s *ModelStructure) CamelModel() string {
+	return util.SnakeToCamelCase(s.Name)
+}
+
+func (s *ModelStructure) LowerModel() string {
+	return strings.ToLower(s.Name)
 }
 
 // Generate generate current structure and all its child
-func (s *Structure) Generate(baseDir string) {
-	GenerateStubs(s, baseDir)
-	//GenerateTemplate(s, baseDir)
-
-	domain := strings.ToLower(s.Model)
-	for _, c := range s.Subdomains {
-		c.Generate(fmt.Sprintf("%s/%s/sub", baseDir, domain))
-	}
+func (s *ModelStructure) Generate(baseDir string) {
+	GenerateModelStubs(s, baseDir)
 }
 
 // Field handle field inside structure.yaml mapping

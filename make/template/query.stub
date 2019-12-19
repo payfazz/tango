@@ -1,35 +1,39 @@
-package query
+package {{.LowerModel}}
 
 import (
 	"context"
 )
 
-// {{.Model}}QueryInterface contract for sending query to {{.CamelModel}} table
-type {{.Model}}QueryInterface interface {
-	{{if .Action.Read}} All(ctx context.Context) ([]*model.{{.Model}}, error) {{end}}
-	{{if .Action.Find}} ById(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {{end}}
+// QueryInterface contract for sending query to {{.CamelModel}} table
+type QueryInterface interface {
+	{{- if .Action.Read}}
+	All(ctx context.Context) ([]*{{.Name}}Model, error)
+	{{- end}}
+	{{- if .Action.Find}}
+	ById(ctx context.Context, id {{.DataType}}) (*{{.Name}}Model, error)
+	{{- end}}
 }
 
-type {{.CamelModel}}Query struct {
-	repository repository.{{.Model}}RepositoryInterface
+type query struct {
+	repository RepositoryInterface
 }
 
 {{if .Action.Read}}
 // All get data from {{.CamelModel}} without any conditions and orders
-func (q *{{.CamelModel}}Query) All(ctx context.Context) ([]*model.{{.Model}}, error) {
+func (q *query) All(ctx context.Context) ([]*{{.Name}}Model, error) {
 	return q.repository.FindAll(ctx, nil, nil, 0, 0)
 }
 {{end}}
 {{if .Action.Find}}
 // ById get one data from {{.CamelModel}} by given id
-func (q *{{.CamelModel}}Query) ById(ctx context.Context, id {{.DataType}}) (*model.{{.Model}}, error) {
+func (q *query) ById(ctx context.Context, id {{.DataType}}) (*{{.Name}}Model, error) {
 	return q.repository.Find(ctx, id)
 }
 {{end}}
 
-// New{{.Model}}Query constructor of {{.CamelModel}} query
-func New{{.Model}}Query() {{.Model}}QueryInterface {
-	return &{{.CamelModel}}Query{
-		repository: repository.New{{.Model}}Repository(),
+// Query constructor of {{.CamelModel}} query
+func Query() QueryInterface {
+	return &query{
+		repository: Repository(),
 	}
 }

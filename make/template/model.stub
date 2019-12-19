@@ -1,37 +1,41 @@
-package model
+package {{.LowerModel}}
 
-// {{.Model}} handle data for {{.Table}} table
-type {{.Model}} struct {
+// {{.Name}}Model handle data for {{.Table}} table
+type {{.Name}}Model struct {
 	fazzdb.Model
 	Id {{.DataType}} `json:"id" db:"id"`
-	{{range .Fields}} {{printf "%s %s `json:\"%s\" db:\"%s\"`\n" .PascalName .Type .CamelName .Name}} {{end}}
+	{{- range .Fields}}
+	{{.PascalName}} {{.Type}} `json:"{{.CamelName}}" db:"{{.Name}}"`
+	{{- end}}
 }
 
 {{if eq .Type "Uuid"}}
 // GeneratePK generate the primary key in {{.Table}} table
-func (m *{{.Model}}) GeneratePK() {
+func (m *{{.Name}}Model) GeneratePK() {
 	m.GenerateId(m)
 }
 {{end}}
 
 // Get find model data by key
-func (m *{{.Model}}) Get(key string) interface{} {
+func (m *{{.Name}}Model) Get(key string) interface{} {
 	return m.Payload()[key]
 }
 
 // Payload map model data into map[string]interface{}
-func (m *{{.Model}}) Payload() map[string]interface{} {
+func (m *{{.Name}}Model) Payload() map[string]interface{} {
 	return m.MapPayload(m)
 }
 
-// {{.Model}}Model construct the {{.Model}} model
-func {{.Model}}Model() *{{.Model}} {
-	return &{{.Model}}{
+// Model construct the {{.Name}}Model model
+func Model() *{{.Name}}Model {
+	return &{{.Name}}Model{
 		Model: fazzdb.{{.Type}}Model(
 			"{{.Table}}",
 			[]fazzdb.Column{
 			    fazzdb.Col("id"),
-			    {{range .Fields}} {{printf "fazzdb.Col(\"%s\"),\n" .Name}} {{end}}
+			    {{- range .Fields}}
+			    fazzdb.Col("{{.Name}}"),
+			    {{- end}}
 			},
 			"id",
 			{{.Timestamps}},

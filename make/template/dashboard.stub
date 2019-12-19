@@ -1,0 +1,76 @@
+package {{.LowerModel}}
+
+import (
+	"context"
+)
+
+// ServiceInterface contract for {{.CamelModel}} service
+type ServiceInterface interface {
+	{{- if .Action.Read}}
+	FindAll(ctx context.Context) ([]*{{.LowerModel}}.{{.Name}}Model, error)
+	{{- end}}
+	{{- if .Action.Find}}
+	Find(ctx context.Context, id {{.DataType}}) (*{{.LowerModel}}.{{.Name}}Model, error)
+	{{- end}}
+	{{- if .Action.Create}}
+	Create(ctx context.Context, payload *{{.LowerModel}}.PayloadCreate) (*{{.DataType}}, error)
+	{{- end}}
+	{{- if .Action.Update}}
+	Update(ctx context.Context, payload *{{.LowerModel}}.PayloadUpdate) (bool, error)
+	{{- end}}
+	{{- if .Action.Delete}}
+	Delete(ctx context.Context, id {{.DataType}}) (bool, error)
+	{{- end}}
+}
+
+type service struct {
+	{{- if .Action.IsQueryNeeded}}
+	query {{.LowerModel}}.QueryInterface
+	{{- end}}
+	{{- if .Action.IsCommandNeeded}}
+	command {{.LowerModel}}.CommandInterface
+	{{- end}}
+}
+
+{{if .Action.Read}}
+// FindAll service for getting all {{.CamelModel}}
+func (s *service) FindAll(ctx context.Context) ([]*{{.LowerModel}}.{{.Name}}Model, error) {
+	return s.query.All(ctx)
+}
+{{end}}
+{{if .Action.Find}}
+// Find service for getting {{.CamelModel}} by given id
+func (s *service) Find(ctx context.Context, id {{.DataType}}) (*{{.LowerModel}}.{{.Name}}Model, error) {
+	return s.query.ById(ctx, id)
+}
+{{end}}
+{{if .Action.Create}}
+// Create service for creating {{.CamelModel}} by given payload
+func (s *service) Create(ctx context.Context, payload *{{.LowerModel}}.PayloadCreate) (*{{.DataType}}, error) {
+	return s.command.Create(ctx, payload)
+}
+{{end}}
+{{if .Action.Update}}
+// Update service for updating {{.CamelModel}} by given payload
+func (s *service) Update(ctx context.Context, payload *{{.LowerModel}}.PayloadUpdate) (bool, error) {
+	return s.command.Update(ctx, payload)
+}
+{{end}}
+{{if .Action.Delete}}
+// Delete service for removing {{.CamelModel}} by given id
+func (s *service) Delete(ctx context.Context, id {{.DataType}}) (bool, error) {
+	return s.command.Delete(ctx, id)
+}
+{{end}}
+
+// Service constructor of {{.CamelModel}} crud
+func Service() ServiceInterface {
+	return &service{
+		{{- if .Action.IsQueryNeeded}}
+		query: {{.LowerModel}}.Query(),
+		{{- end}}
+		{{- if .Action.IsCommandNeeded}}
+		command: {{.LowerModel}}.Command(),
+		{{- end}}
+	}
+}

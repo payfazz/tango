@@ -35,7 +35,7 @@ func MakeCommand() cli.Command {
 		Action: func(c *cli.Context) {
 			structurePath := c.Args().Get(0)
 			if "" == structurePath {
-				structurePath = "./make/structure.yaml"
+				structurePath = make.STRUCTURE_PATH
 			}
 
 			// Read file and parse to struct
@@ -51,16 +51,14 @@ func MakeCommand() cli.Command {
 			}
 
 			// Move domain to backup dir
-			dir := "./internal/domain"
-			backupDir := "./internal/old"
-
 			if c.Bool("force") {
-				_ = os.Rename(dir, backupDir)
+				_ = os.Rename(make.DOMAIN_DIR, make.DOMAIN_BACKUP_DIR)
+				_ = os.Rename(make.DASHBOARD_DIR, make.DASHBOARD_BACKUP_DIR)
 			}
 
 			// Generate stubs
 			for _, structure := range structureMap.Structures {
-				structure.Generate(dir)
+				structure.Generate(make.DOMAIN_DIR)
 			}
 
 			err = util.RunScript(fileName, makeScripts)
