@@ -30,7 +30,7 @@ func (d *DomainStructure) Generate(baseDir string) {
 	GenerateDomainStubs(d, baseDir)
 
 	for _, model := range d.Models {
-		modelDir := fmt.Sprintf("%s/%s", baseDir, d.Domain)
+		modelDir := fmt.Sprintf("%s/%s", baseDir, d.LowerDomain())
 		model.Generate(modelDir)
 	}
 }

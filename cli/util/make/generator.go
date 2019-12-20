@@ -53,6 +53,7 @@ func GenerateModelStubs(structure *ModelStructure, baseDir string) {
 func generateFile(structure interface{}, baseDir string, fileName string, stubPath string) {
 	// Make dir and file
 	generatedFile := fmt.Sprintf("%s/%s.go", baseDir, fileName) // ex: internal/domain/inventory/author/model.go
+	fmt.Println("creating file:", generatedFile)
 
 	_, err := os.Stat(generatedFile)
 	if !os.IsNotExist(err) {
