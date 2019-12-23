@@ -1,4 +1,4 @@
-package migrate
+package main
 
 import (
 	"github.com/payfazz/go-apt/pkg/fazzdb"
