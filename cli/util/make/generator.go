@@ -7,13 +7,11 @@ import (
 	"text/template"
 )
 
-var dirFileMode = os.FileMode(0744)
-
 // GenerateDomainStubs generate all required stubs for domain service
 func GenerateDomainStubs(structure *DomainStructure, baseDir string) {
 	// Make root directory
 	dir := fmt.Sprintf("%s/%s", baseDir, strings.ToLower(structure.Domain)) // ex: internal/domain/author
-	err := os.MkdirAll(dir, dirFileMode)
+	err := os.MkdirAll(dir, DIR_FILE_MODE)
 	if nil != err {
 		panic(err)
 	}
@@ -27,7 +25,7 @@ func GenerateModelStubs(structure *ModelStructure, baseDir string) {
 
 	// Make root directory
 	dir := fmt.Sprintf("%s/%s", baseDir, modelName) // ex: internal/domain/inventory/author
-	err := os.MkdirAll(dir, dirFileMode)
+	err := os.MkdirAll(dir, DIR_FILE_MODE)
 	if nil != err {
 		panic(err)
 	}
@@ -61,7 +59,7 @@ func generateFile(structure interface{}, baseDir string, fileName string, stubPa
 		return
 	}
 
-	err = os.MkdirAll(baseDir, dirFileMode)
+	err = os.MkdirAll(baseDir, DIR_FILE_MODE)
 	if nil != err {
 		panic(err)
 	}

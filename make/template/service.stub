@@ -20,14 +20,18 @@ type service struct {
 }
 
 // Service constructor of {{.Domain}} crud
-func Service() ServiceInterface {
+func Service(
+{{- range .Models}}
+    {{.CamelModel}}Repository {{.LowerModel}}.RepositoryInterface,
+{{- end}}
+) ServiceInterface {
 	return &service{
 {{- range .Models}}
 		{{- if .Action.IsQueryNeeded}}
-		{{.CamelModel}}Query: {{.LowerModel}}.Query(),
+		{{.CamelModel}}Query: {{.LowerModel}}.Query({{.CamelModel}}Repository),
 		{{- end}}
 		{{- if .Action.IsCommandNeeded}}
-		{{.CamelModel}}Command: {{.LowerModel}}.Command(),
+		{{.CamelModel}}Command: {{.LowerModel}}.Command({{.CamelModel}}Repository),
 		{{- end}}
 {{- end}}
 	}

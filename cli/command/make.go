@@ -2,7 +2,6 @@ package command
 
 import (
 	"io/ioutil"
-	"os"
 
 	"github.com/payfazz/tango/cli/util"
 
@@ -26,12 +25,6 @@ func MakeCommand() cli.Command {
 		Name:    "make",
 		Aliases: []string{"m"},
 		Usage:   "tango make <path_to_structure>",
-		Flags: []cli.Flag{
-			cli.BoolFlag{
-				Name:  "force, f",
-				Usage: "force generate even if file already exist",
-			},
-		},
 		Action: func(c *cli.Context) {
 			structurePath := c.Args().Get(0)
 			if "" == structurePath {
@@ -48,12 +41,6 @@ func MakeCommand() cli.Command {
 			err = yaml.Unmarshal(content, &structureMap)
 			if nil != err {
 				panic(err)
-			}
-
-			// Move domain to backup dir
-			if c.Bool("force") {
-				_ = os.Rename(make.DOMAIN_DIR, make.DOMAIN_BACKUP_DIR)
-				_ = os.Rename(make.DASHBOARD_DIR, make.DASHBOARD_BACKUP_DIR)
 			}
 
 			// Generate stubs

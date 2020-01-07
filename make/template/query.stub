@@ -32,8 +32,8 @@ func (q *query) ById(ctx context.Context, id {{.DataType}}) (*{{.Name}}Model, er
 {{end}}
 
 // Query constructor of {{.CamelModel}} query
-func Query() QueryInterface {
+func Query(repository RepositoryInterface) QueryInterface {
 	return &query{
-		repository: Repository(),
+		repository: repository,
 	}
 }

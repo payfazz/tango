@@ -95,8 +95,8 @@ func (c *command) ModelDelete(ctx context.Context, m *{{.Name}}Model) (bool, err
 {{end}}
 
 // Command constructor of {{.CamelModel}} command
-func Command() CommandInterface {
+func Command(repository RepositoryInterface) CommandInterface {
 	return &command{
-		repository: Repository(),
+		repository: repository,
 	}
 }
