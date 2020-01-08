@@ -64,13 +64,13 @@ func (s *service) Delete(ctx context.Context, id {{.DataType}}) (bool, error) {
 {{end}}
 
 // Service constructor of {{.CamelModel}} crud
-func Service() ServiceInterface {
+func Service({{.CamelModel}}Repository {{.LowerModel}}.RepositoryInterface) ServiceInterface {
 	return &service{
 		{{- if .Action.IsQueryNeeded}}
-		query: {{.LowerModel}}.Query(),
+		query: {{.LowerModel}}.Query({{.CamelModel}}Repository),
 		{{- end}}
 		{{- if .Action.IsCommandNeeded}}
-		command: {{.LowerModel}}.Command(),
+		command: {{.LowerModel}}.Command({{.CamelModel}}Repository),
 		{{- end}}
 	}
 }
