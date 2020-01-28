@@ -1,26 +1,22 @@
 package fazzrepository
 
-// EmptyResultError appear when data returned as empty
-type EmptyResultError struct{}
+// emptyResultError appear when data returned as empty
+type emptyResultError struct{}
 
 // Error return error text
-func (e *EmptyResultError) Error() string {
-	return "fazzrepository: empty result"
+func (e *emptyResultError) Error() string {
+	return "no rows in result set"
 }
 
 // NewEmptyResultError creates new instance of EmptyResultError
 func NewEmptyResultError() error {
-	return &EmptyResultError{}
+	return &emptyResultError{}
 }
 
 // IsEmptyResult check if instance of error is EmptyResultError
-func IsEmptyResult(it interface{}) bool {
-	switch it.(type) {
-	case EmptyResultError:
+func IsEmptyResult(err error) bool {
+	if _, ok := err.(*emptyResultError); ok {
 		return true
-	case *EmptyResultError:
-		return true
-	default:
-		return false
 	}
+	return false
 }
