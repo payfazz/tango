@@ -41,7 +41,15 @@ func (s *service) FindAll(ctx context.Context) ([]*{{.LowerModel}}.{{.Name}}Mode
 {{if .Action.Find}}
 // Find service for getting {{.CamelModel}} by given id
 func (s *service) Find(ctx context.Context, id {{.DataType}}) (*{{.LowerModel}}.{{.Name}}Model, error) {
-	return s.query.ById(ctx, id)
+	{{.CamelModel}}Value, err := s.query.ById(ctx, id)
+	if fazzrepository.IsEmptyResult(err) {
+        return nil, httpError.NotFound(fmt.Sprintf("{{.LowerModel}} (%s) not found", id))
+    }
+    if nil != err {
+        return nil, err
+    }
+
+    return {{.CamelModel}}Value, nil
 }
 {{end}}
 {{if .Action.Create}}
