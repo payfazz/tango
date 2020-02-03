@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/payfazz/tango/config"
+	"github.com/payfazz/tango/transport/container"
 	grpcServer "github.com/payfazz/tango/transport/grpc/server"
 	httpServer "github.com/payfazz/tango/transport/http/server"
 	prometheusServer "github.com/payfazz/tango/transport/prometheus/server"
@@ -10,10 +11,12 @@ import (
 func main() {
 	config.SetVerboseQuery()
 
-	api := httpServer.CreateApiServer()
+	app := container.CreateAppContainer()
+
+	api := httpServer.CreateApiServer(app)
 	api.Serve()
 
-	grpc := grpcServer.CreateGrpcServer()
+	grpc := grpcServer.CreateGrpcServer(app)
 	grpc.Serve()
 
 	promet := prometheusServer.CreatePrometheusServer()

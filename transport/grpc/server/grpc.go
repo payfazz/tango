@@ -4,11 +4,13 @@ import (
 	"net"
 
 	"github.com/payfazz/tango/config"
-
+	"github.com/payfazz/tango/transport/container"
 	"google.golang.org/grpc"
 )
 
-type GrpcServer struct{}
+type GrpcServer struct {
+	app *container.AppContainer
+}
 
 func (gs *GrpcServer) Serve() {
 	go func() {
@@ -27,6 +29,8 @@ func (gs *GrpcServer) Serve() {
 	}()
 }
 
-func CreateGrpcServer() *GrpcServer {
-	return &GrpcServer{}
+func CreateGrpcServer(app *container.AppContainer) *GrpcServer {
+	return &GrpcServer{
+		app: app,
+	}
 }

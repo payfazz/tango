@@ -15,18 +15,18 @@ import (
 )
 
 // ApiServer empty struct
-type ApiServer struct{}
+type ApiServer struct {
+	app *container.AppContainer
+}
 
 // Serve is a function to serve the server
 func (as *ApiServer) Serve() {
-	app := container.CreateAppContainer()
-
 	s := &http.Server{
 		Addr:         config.Get(config.PORT),
 		ReadTimeout:  config.GetIfDuration(config.I_READ_TIMEOUT),
 		WriteTimeout: config.GetIfDuration(config.I_WRITE_TIMEOUT),
 		IdleTimeout:  config.GetIfDuration(config.I_IDLE_TIMEOUT),
-		Handler:      route.Compile(app),
+		Handler:      route.Compile(as.app),
 	}
 
 	serverErrCh := make(chan error)
@@ -61,6 +61,8 @@ func (as *ApiServer) Serve() {
 }
 
 // CreateApiServer is a function as a constructor to create an API server
-func CreateApiServer() *ApiServer {
-	return &ApiServer{}
+func CreateApiServer(app *container.AppContainer) *ApiServer {
+	return &ApiServer{
+		app: app,
+	}
 }
