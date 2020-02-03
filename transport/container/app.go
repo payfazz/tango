@@ -1,9 +1,12 @@
 package container
 
+import "github.com/payfazz/tango/transport/http/container"
+
 // AppContainer is a struct to handle all requirement for app to run properly
 type AppContainer struct {
 	Clients     *ClientContainer
-	Middlewares *MiddlewareContainer
+	GrpcClients *GrpcClientContainer
+	Middlewares *container.MiddlewareContainer
 	Services    *ServiceContainer
 }
 
@@ -11,10 +14,12 @@ type AppContainer struct {
 func CreateAppContainer() *AppContainer {
 	repositories := CreateRepositoryContainer()
 	clients := CreateClientContainer()
+	grpcClients := CreateGrpcClientContainer()
 
 	return &AppContainer{
 		Clients:     clients,
-		Middlewares: CreateMiddlewareContainer(),
-		Services:    CreateServiceContainer(repositories, clients),
+		GrpcClients: grpcClients,
+		Middlewares: container.CreateMiddlewareContainer(),
+		Services:    CreateServiceContainer(repositories, grpcClients, clients),
 	}
 }
