@@ -57,6 +57,8 @@ var base = map[string]string{
 	THROTTLE_PREFIX: "throttle",
 	// THROTTLE_TRIGGER default: on
 	THROTTLE_TRIGGER: ON,
+	// GRPC_PORT :1301
+	GRPC_PORT: ":1301",
 
 	// TEST
 	// TEST_DB_HOST localhost

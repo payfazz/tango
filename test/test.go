@@ -6,7 +6,7 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 	"github.com/payfazz/go-apt/pkg/fazzkv/redis"
 	"github.com/payfazz/tango/config"
-	"github.com/payfazz/tango/http/app"
+	"github.com/payfazz/tango/transport/http/app"
 )
 
 // PrepareTest function that connecting the test environment to the testing db and testing redis

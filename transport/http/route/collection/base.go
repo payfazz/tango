@@ -2,8 +2,8 @@ package collection
 
 import (
 	"github.com/payfazz/go-apt/pkg/fazzrouter"
-	"github.com/payfazz/tango/http/container"
-	"github.com/payfazz/tango/http/controller/base"
+	"github.com/payfazz/tango/transport/container"
+	"github.com/payfazz/tango/transport/http/controller/base"
 )
 
 // RouteBase is a base router

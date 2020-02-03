@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/payfazz/go-apt/pkg/fazzrouter"
-	"github.com/payfazz/tango/http/container"
-	"github.com/payfazz/tango/http/route/collection"
+	"github.com/payfazz/tango/transport/container"
+	"github.com/payfazz/tango/transport/http/route/collection"
 )
 
 // Compile is a function to compile the data

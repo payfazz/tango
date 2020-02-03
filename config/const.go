@@ -82,6 +82,10 @@ const (
 )
 
 const (
+	GRPC_PORT = "GRPC_PORT"
+)
+
+const (
 	// PROMET_FLAG PROMET_FLAG
 	PROMET_FLAG = "PROMET_FLAG"
 	// PROMET_PORT PROMET_PORT
