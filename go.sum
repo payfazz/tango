@@ -137,8 +137,10 @@ github.com/onsi/ginkgo v1.8.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+W
 github.com/onsi/gomega v1.5.0 h1:izbySO9zDPmjJ8rDjLvkA2zJHIo+HkYXHnf7eN7SSyo=
 github.com/onsi/gomega v1.5.0/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1CpauHY=
 github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
-github.com/payfazz/go-apt v0.17.0 h1:Kk/e5W2wmG4RImOvPYeKXmSwsw8H9uN8M0GUYFIqreY=
-github.com/payfazz/go-apt v0.17.0/go.mod h1:Zu0o9VfIgKaIyUm+05WIcF4wA/s+d1el2EsjA0NWYeY=
+github.com/payfazz/go-apt v0.17.12 h1:MGOO0eds3rlQcZeorTVkYHP8+PVoRZcdQKGZC1nrurE=
+github.com/payfazz/go-apt v0.17.12/go.mod h1:3WNegycJ6d+UaSNen2ANOBnfrX5mmOowL5Wu7YGRUMQ=
+github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f h1:BCImsRNTGTtHmeIf5BgYxFgo5FnQSJIt7BMKSwfeHqk=
+github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f/go.mod h1:0pfUhstdZUjwsGIvcOEn8hMWDiEZp4cgqGXfT16on6A=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4 h1:j0/j6gb1J8yElpROQtq3X8homJTUTXvmsYqVCogzX1c=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4/go.mod h1:pGgGdE8OMjA0auJIXfMtJxSdiix2m8uA9P/fbGGwosE=
 github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13 h1:wC1HW3Go+0Fug8xG29Mi2NTefS+kQjEmTAMEc0eQOQk=

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/payfazz/go-apt/pkg/fazzdb"
-	"github.com/payfazz/go-apt/pkg/fazzmonitor/prometheusclient"
+	prometheus "github.com/payfazz/go-apt/pkg/fazzrouter/middleware"
 	"github.com/payfazz/tango/config"
 	"github.com/payfazz/tango/lib/fazzthrottle"
 	"github.com/payfazz/tango/transport/http/app"
@@ -41,9 +41,8 @@ func CreateMiddlewareContainer() *MiddlewareContainer {
 
 func createPrometheus() *prometheusMiddleware {
 	return &prometheusMiddleware{
-		RequestCounter:  prometheusclient.RequestCounter(),
-		RequestDuration: prometheusclient.RequestDuration(),
-		StatusCounter:   prometheusclient.StatusCounter(),
+		RequestCounter:  prometheus.HTTPRequestCounterMiddleware(),
+		RequestDuration: prometheus.HTTPRequestDurationMiddleware(),
 	}
 }
 

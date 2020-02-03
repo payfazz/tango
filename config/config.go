@@ -59,6 +59,8 @@ var base = map[string]string{
 	THROTTLE_TRIGGER: ON,
 	// GRPC_PORT :1301
 	GRPC_PORT: ":1301",
+	// SERVICE_NAME tango
+	SERVICE_NAME: "tango",
 
 	// TEST
 	// TEST_DB_HOST localhost

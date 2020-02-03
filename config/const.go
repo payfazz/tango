@@ -29,6 +29,11 @@ const (
 )
 
 const (
+	// SERVICE_NAME SERVICE_NAME
+	SERVICE_NAME = "SERVICE_NAME"
+)
+
+const (
 	// DB_HOST DB_HOST
 	DB_HOST = "DB_HOST"
 	// DB_PORT DB_PORT

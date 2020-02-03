@@ -5,7 +5,7 @@ import (
 	"github.com/payfazz/tango/transport/container"
 	grpcServer "github.com/payfazz/tango/transport/grpc/server"
 	httpServer "github.com/payfazz/tango/transport/http/server"
-	prometheusServer "github.com/payfazz/tango/transport/prometheus/server"
+	monitorServer "github.com/payfazz/tango/transport/monitor/server"
 )
 
 func main() {
@@ -19,6 +19,6 @@ func main() {
 	grpc := grpcServer.CreateGrpcServer(app)
 	grpc.Serve()
 
-	promet := prometheusServer.CreatePrometheusServer()
-	promet.Serve()
+	monitor := monitorServer.CreateMonitorServer()
+	monitor.Serve()
 }
