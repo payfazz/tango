@@ -21,7 +21,7 @@ set -x
 git clone git@github.com:payfazz/tango.git $1
 cd $1
 mv cmd/tango cmd/$1
-find .ci cmd config database http internal lib test -type f -exec sed -i'' "s/tango/$1/g" {} \;
+find .ci cmd config database transport internal lib test -type f -exec sed -i'' "s/tango/$1/g" {} \;
 sed -i'' "s/tango/$1/g" go.mod
 go mod tidy
 rm -rf cli cli.go .git
@@ -34,7 +34,7 @@ set -x
 git clone git@github.com:payfazz/tango.git $1
 cd $1
 mv cmd/tango cmd/$1
-find .ci cmd config database http internal lib test -type f -exec sed -i '' "s/tango/$1/g" {} \;
+find .ci cmd config database transport internal lib test -type f -exec sed -i '' "s/tango/$1/g" {} \;
 sed -i '' "s/tango/$1/g" go.mod
 go mod tidy
 rm -rf cli cli.go .git
