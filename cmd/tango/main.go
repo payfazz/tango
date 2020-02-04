@@ -13,12 +13,12 @@ func main() {
 
 	app := container.CreateAppContainer()
 
-	api := httpServer.CreateApiServer(app)
-	api.Serve()
-
 	grpc := grpcServer.CreateGrpcServer(app)
 	grpc.Serve()
 
 	monitor := monitorServer.CreateMonitorServer()
 	monitor.Serve()
+	
+	api := httpServer.CreateApiServer(app)
+	api.Serve()
 }
