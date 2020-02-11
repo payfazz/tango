@@ -8,18 +8,18 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzkv/redis"
 )
 
-type appKeyType struct{}
+type authKeyType struct{}
 
-var appKey appKeyType
+var authKey authKeyType
 
-// App is a struct that will be send in the context
-type App struct {
+// Authentication hold authentication credentials to be passed into context
+type Authentication struct {
 	AuthId    string
 	UserAgent string
 	Token     string
 }
 
-// Redis is a function that construct handler to append redis into context
+// Redis middleware to append redis into context
 func Redis(rds redis.RedisInterface) func(next http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +29,7 @@ func Redis(rds redis.RedisInterface) func(next http.HandlerFunc) http.HandlerFun
 	}
 }
 
-// DB is a function that construct handler to append queryDb into context
+// DB middleware to append queryDb into context
 func DB(queryDb *fazzdb.Query) func(next http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
@@ -39,22 +39,22 @@ func DB(queryDb *fazzdb.Query) func(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// New is a function that construct handler for AppContext
-func New() func(http.HandlerFunc) http.HandlerFunc {
+// Auth middleware to append for Authentication
+func Auth() func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
-			ctx := NewAppContext(r.Context())
+			ctx := NewAuthContext(r.Context())
 			next(w, r.WithContext(ctx))
 		}
 	}
 }
 
 // GetApp is a function that used to get the app context
-func GetApp(ctx context.Context) *App {
-	return ctx.Value(appKey).(*App)
+func GetApp(ctx context.Context) *Authentication {
+	return ctx.Value(authKey).(*Authentication)
 }
 
 // NewAppContext is a function that used to create new app context
-func NewAppContext(ctx context.Context) context.Context {
-	return context.WithValue(ctx, appKey, &App{})
+func NewAuthContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, authKey, &Authentication{})
 }

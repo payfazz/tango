@@ -13,7 +13,7 @@ import (
 
 // MiddlewareContainer is a struct to handle all middleware used in project
 type MiddlewareContainer struct {
-	App        func(next http.HandlerFunc) http.HandlerFunc
+	Auth       func(next http.HandlerFunc) http.HandlerFunc
 	DB         func(next http.HandlerFunc) http.HandlerFunc
 	Cors       func(next http.HandlerFunc) http.HandlerFunc
 	Redis      func(next http.HandlerFunc) http.HandlerFunc
@@ -30,7 +30,7 @@ type prometheusMiddleware struct {
 // CreateMiddlewareContainer is a constructor for creating all middlewares used in the app
 func CreateMiddlewareContainer() *MiddlewareContainer {
 	return &MiddlewareContainer{
-		App:        createApp(),
+		Auth:       createAuth(),
 		DB:         createDB(),
 		Cors:       middleware.Cors(),
 		Redis:      createRedis(),
@@ -56,8 +56,8 @@ func createThrottle() func(next http.HandlerFunc) http.HandlerFunc {
 	)
 }
 
-func createApp() func(next http.HandlerFunc) http.HandlerFunc {
-	return app.New()
+func createAuth() func(next http.HandlerFunc) http.HandlerFunc {
+	return app.Auth()
 }
 
 func createRedis() func(next http.HandlerFunc) http.HandlerFunc {

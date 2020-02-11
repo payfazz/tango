@@ -12,7 +12,7 @@ import (
 func Compile(app *container.AppContainer) http.HandlerFunc {
 	r := fazzrouter.BaseRoute()
 	r.Use(
-		app.Middlewares.App,   // remove this line if app doesn't use authentication
+		app.Middlewares.Auth,  // remove this line if app doesn't use authentication
 		app.Middlewares.DB,    // remove this line if app doesn't use DB
 		app.Middlewares.Redis, // remove this line if app doesn't use Redis
 		app.Middlewares.Cors,
