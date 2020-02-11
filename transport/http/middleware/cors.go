@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// Cors is a function that used to set cors for web request
+// Cors set cors for web request
 func Cors() func(next http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {

@@ -5,6 +5,6 @@ import (
 	"github.com/payfazz/tango/transport/container"
 )
 
-// RouteVersion1 is a router version v1
+// RouteVersion1 route for version 1
 func RouteVersion1(r *fazzrouter.Route, app *container.AppContainer) {
 }

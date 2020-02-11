@@ -6,7 +6,7 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzcommon/response"
 )
 
-// Ping is a function that used to check the service status
+// Ping check if service status is up or down
 func Ping() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response.Text(w, "ready to serve", http.StatusOK)

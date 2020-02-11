@@ -8,17 +8,17 @@ import (
 	"github.com/payfazz/tango/transport/http/route/collection"
 )
 
-// Compile is a function to compile the data
+// Compile compile the data http endpoint and middleware
 func Compile(app *container.AppContainer) http.HandlerFunc {
 	r := fazzrouter.BaseRoute()
 	r.Use(
-		app.Middlewares.Auth,  // remove this line if app doesn't use authentication
-		app.Middlewares.DB,    // remove this line if app doesn't use DB
-		app.Middlewares.Redis, // remove this line if app doesn't use Redis
-		app.Middlewares.Cors,
-		app.Middlewares.Prometheus.RequestDuration,
-		app.Middlewares.Prometheus.RequestCounter,
-		app.Middlewares.Prometheus.StatusCounter,
+		app.HttpMiddleware.Auth,  // remove this line if app doesn't use authentication
+		app.HttpMiddleware.DB,    // remove this line if app doesn't use DB
+		app.HttpMiddleware.Redis, // remove this line if app doesn't use Redis
+		app.HttpMiddleware.Cors,
+		app.HttpMiddleware.Prometheus.RequestDuration,
+		app.HttpMiddleware.Prometheus.RequestCounter,
+		app.HttpMiddleware.Prometheus.StatusCounter,
 	)
 	collection.RouteBase(r, app)
 	collection.RouteVersion1(r, app)

@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/payfazz/tango/transport"
+
 	"github.com/payfazz/go-apt/pkg/fazzmonitor/ping/messagebroker"
 
 	"github.com/payfazz/go-apt/pkg/fazzmonitor/ping/database"
@@ -14,8 +16,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+// MonitorServer used for serving monitor server
 type MonitorServer struct{}
 
+// Serve handle actual serving of monitor server
 func (ps *MonitorServer) Serve() {
 	if config.Get(config.PROMET_FLAG) == config.ON {
 		go func() {
@@ -26,7 +30,8 @@ func (ps *MonitorServer) Serve() {
 	}
 }
 
-func CreateMonitorServer() *MonitorServer {
+// CreateMonitorServer construct MonitorServer
+func CreateMonitorServer() transport.ServerInterface {
 	return &MonitorServer{}
 }
 

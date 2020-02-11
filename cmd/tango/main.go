@@ -18,7 +18,7 @@ func main() {
 
 	monitor := monitorServer.CreateMonitorServer()
 	monitor.Serve()
-	
-	api := httpServer.CreateApiServer(app)
-	api.Serve()
+
+	http := httpServer.CreateHttpServer(app)
+	http.Serve()
 }

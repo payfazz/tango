@@ -56,7 +56,7 @@ func (l *Limiter) hit(r redis.RedisInterface, key string, limit int, duration ti
 	return true, nil
 }
 
-// Compile is a function to compile and process the limitter
+// Compile compile middleware and process the limitter
 func (l *Limiter) Compile(
 	limit int,
 	duration time.Duration,
@@ -116,7 +116,7 @@ func (l *Limiter) getIP(r *http.Request) string {
 	return ""
 }
 
-// MiddlewarePrefix function that used to create throttle middleware with prefix
+// MiddlewarePrefix construct throttle middleware with prefix
 func MiddlewarePrefix(
 	prefix string,
 	limit int,
@@ -130,7 +130,7 @@ func MiddlewarePrefix(
 	return l.Compile(limit, duration, limitType, useThrottle)
 }
 
-// Middleware function that used to create throttle middleware without any prefix
+// Middleware construct throttle middleware without any prefix
 func Middleware(
 	limit int,
 	duration time.Duration,

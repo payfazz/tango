@@ -1,6 +1,6 @@
 package transport
 
-// Interface is an interface for serving the data
-type Interface interface {
+// ServerInterface interface for handle serving of various endpoint
+type ServerInterface interface {
 	Serve()
 }

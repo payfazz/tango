@@ -7,7 +7,7 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 )
 
-// RepositoryInterface contract for repository struct
+// RepositoryInterface interface for repository struct
 type RepositoryInterface interface {
 	GetQuery(ctx context.Context) (*fazzdb.Query, error)
 
@@ -214,7 +214,7 @@ func (r *Repository) Delete(ctx context.Context, m fazzdb.ModelInterface) (bool,
 	return true, err
 }
 
-// NewRepository constructor for base repository
+// NewRepository construct base repository
 func NewRepository(m fazzdb.ModelInterface) RepositoryInterface {
 	return &Repository{
 		model: m,

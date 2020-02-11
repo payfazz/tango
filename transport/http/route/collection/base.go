@@ -6,7 +6,7 @@ import (
 	"github.com/payfazz/tango/transport/http/controller/base"
 )
 
-// RouteBase is a base router
+// RouteBase default route for app
 func RouteBase(r *fazzrouter.Route, app *container.AppContainer) {
 	r.Get("ping", base.Ping())
 }

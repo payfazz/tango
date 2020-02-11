@@ -9,20 +9,20 @@ import (
 	"github.com/payfazz/tango/transport/http/app"
 )
 
-// PrepareTest function that connecting the test environment to the testing db and testing redis
+// PrepareTest connect test environment to testing db and redis
 func PrepareTest() context.Context {
 	config.Set(config.ENV, config.ENV_TESTING)
 	queryDb := fazzdb.QueryDb(config.GetDb(), config.GetQueryConfig())
 
 	ctx := context.Background()
-	ctx = app.NewAppContext(ctx)
+	ctx = app.NewAuthContext(ctx)
 	ctx = redis.NewRedisContext(ctx, config.GetRedis())
 	ctx = fazzdb.NewQueryContext(ctx, queryDb)
 
 	return ctx
 }
 
-// Truncate is a function that used to truncate all testing table
+// Truncate truncate all testing table
 func Truncate(ctx context.Context, tables ...string) error {
 	q, _ := fazzdb.GetQueryContext(ctx)
 	_, err := q.Truncate(tables...)

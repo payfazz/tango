@@ -11,7 +11,7 @@ import (
 	"github.com/payfazz/tango/transport/http/middleware"
 )
 
-// MiddlewareContainer is a struct to handle all middleware used in project
+// MiddlewareContainer handle all middleware used in project
 type MiddlewareContainer struct {
 	Auth       func(next http.HandlerFunc) http.HandlerFunc
 	DB         func(next http.HandlerFunc) http.HandlerFunc
@@ -27,7 +27,7 @@ type prometheusMiddleware struct {
 	StatusCounter   func(next http.HandlerFunc) http.HandlerFunc
 }
 
-// CreateMiddlewareContainer is a constructor for creating all middlewares used in the app
+// CreateMiddlewareContainer construct all middlewares used in the app
 func CreateMiddlewareContainer() *MiddlewareContainer {
 	return &MiddlewareContainer{
 		Auth:       createAuth(),
