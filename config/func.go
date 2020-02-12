@@ -18,12 +18,12 @@ var rds redis.RedisInterface
 var mdb, db, sdb *sqlx.DB
 var rdsOnce, mdbOnce, dbOnce, sdbOnce sync.Once
 
-// Set is a function to append value to base config
+// Set add / change value to base config
 func Set(key string, value string) {
 	base[key] = value
 }
 
-// GetRedis is a function to get Redis instance
+// GetRedis create redis instance
 func GetRedis() redis.RedisInterface {
 	rdsOnce.Do(func() {
 		var err error
@@ -47,7 +47,7 @@ func GetRedis() redis.RedisInterface {
 	return rds
 }
 
-// GetMigrateDb is a function to get DB Migration instance
+// GetMigrateDb create DB Migration instance
 func GetMigrateDb() *sqlx.DB {
 	mdbOnce.Do(func() {
 		var err error
@@ -81,7 +81,7 @@ func GetMigrateDb() *sqlx.DB {
 	return mdb
 }
 
-// GetDB get DB instance
+// GetDB create DB instance
 func GetDb() *sqlx.DB {
 	dbOnce.Do(func() {
 		var err error
@@ -117,7 +117,7 @@ func GetDb() *sqlx.DB {
 	return db
 }
 
-// GetDB get slave DB instance
+// GetDB create slave DB instance
 func GetSlaveDb() *sqlx.DB {
 	sdbOnce.Do(func() {
 		var err error
@@ -153,17 +153,17 @@ func GetSlaveDb() *sqlx.DB {
 	return sdb
 }
 
-// GetQueryConfig is a function to get default query config
+// GetQueryConfig get default query config
 func GetQueryConfig() fazzdb.Config {
 	return GetIfQueryConfig(I_QUERY_CONFIG)
 }
 
-// GetSlaveQueryConfig is a function to get default slave query config
+// GetSlaveQueryConfig get default slave query config
 func GetSlaveQueryConfig() fazzdb.Config {
 	return GetIfQueryConfig(I_SLAVE_QUERY_CONFIG)
 }
 
-// SetVerboseQuery is a function to set verbose mode on fazzdb
+// SetVerboseQuery set verbose mode on fazzdb
 func SetVerboseQuery() {
 	if OFF == Get(DEBUG_LOG) || ENV_PRODUCTION == Get(ENV) {
 		return
@@ -172,16 +172,18 @@ func SetVerboseQuery() {
 	fazzdb.Verbose()
 }
 
-// Get config by key
+// Get get config by key from env then base config
 func Get(key string) string {
 	r := os.Getenv(key)
-	if r == "" {
-		if _, ok := base[key]; !ok {
-			return ""
-		}
-		r = base[key]
+	if r != "" {
+		return r
 	}
-	return r
+
+	if configValue, ok := base[key]; ok {
+		return configValue
+	}
+
+	return ""
 }
 
 // GetIfString get config as string
@@ -241,4 +243,36 @@ func getIf(key string, p interface{}) interface{} {
 	}
 
 	return baseInterface[key]
+}
+
+func mergeConfig(configs ...map[string]string) map[string]string {
+	result := map[string]string{}
+
+	for _, configMap := range configs {
+		for key, configValue := range configMap {
+			if _, ok := result[key]; ok {
+				panic(fmt.Sprintf(`duplicate config key "%s" detected`, key))
+			}
+
+			result[key] = configValue
+		}
+	}
+
+	return result
+}
+
+func mergeConfigInterface(configInterfaces ...map[string]interface{}) map[string]interface{} {
+	result := map[string]interface{}{}
+
+	for _, configInterfaceMap := range configInterfaces {
+		for key, configValue := range configInterfaceMap {
+			if _, ok := result[key]; ok {
+				panic(fmt.Sprintf(`duplicate config interface key "%s" detected`, key))
+			}
+
+			result[key] = configValue
+		}
+	}
+
+	return result
 }

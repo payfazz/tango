@@ -24,7 +24,7 @@ type HttpServer struct {
 // Serve handle actual serving for HTTP server
 func (hs *HttpServer) Serve() {
 	s := &http.Server{
-		Addr:         config.Get(config.PORT),
+		Addr:         config.Get(config.HTTP_PORT),
 		ReadTimeout:  config.GetIfDuration(config.I_READ_TIMEOUT),
 		WriteTimeout: config.GetIfDuration(config.I_WRITE_TIMEOUT),
 		IdleTimeout:  config.GetIfDuration(config.I_IDLE_TIMEOUT),
@@ -34,7 +34,7 @@ func (hs *HttpServer) Serve() {
 	serverErrCh := make(chan error)
 	go func() {
 		defer close(serverErrCh)
-		log.Println(fmt.Sprintf("Server running at port %s", config.Get(config.PORT)))
+		log.Println(fmt.Sprintf("Server running at port %s", config.Get(config.HTTP_PORT)))
 		serverErrCh <- s.ListenAndServe()
 	}()
 
