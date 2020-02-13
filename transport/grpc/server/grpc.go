@@ -13,13 +13,13 @@ import (
 	"google.golang.org/grpc"
 )
 
-// GrpcServer used for serving GRPC endpoint
-type GrpcServer struct {
+// grpcServer used for serving GRPC endpoint
+type grpcServer struct {
 	app *container.AppContainer
 }
 
 // Serve handle actual serving of GRPC endpoint
-func (gs *GrpcServer) Serve() {
+func (gs *grpcServer) Serve() {
 	go func() {
 		listener, err := net.Listen("tcp", config.Get(config.GRPC_PORT))
 		if nil != err {
@@ -39,7 +39,7 @@ func (gs *GrpcServer) Serve() {
 
 // CreateGrpcServer construct GRPC server
 func CreateGrpcServer(app *container.AppContainer) transport.ServerInterface {
-	return &GrpcServer{
+	return &grpcServer{
 		app: app,
 	}
 }

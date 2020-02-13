@@ -9,13 +9,13 @@ import (
 var postgresConfig = map[string]string{
 	DB_HOST: "localhost",
 	DB_PORT: "5432",
-	DB_NAME: "wuilly-inbox",
+	DB_NAME: "tango",
 	DB_USER: "postgres",
 	DB_PASS: "postgres",
 
 	DB_SLAVE_HOST: "localhost",
 	DB_SLAVE_PORT: "5432",
-	DB_SLAVE_NAME: "wuilly-inbox",
+	DB_SLAVE_NAME: "tango",
 	DB_SLAVE_USER: "postgres",
 	DB_SLAVE_PASS: "postgres",
 
@@ -28,14 +28,14 @@ var postgresConfig = map[string]string{
 
 	TEST_DB_HOST:         "localhost",
 	TEST_DB_PORT:         "5432",
-	TEST_DB_NAME:         "wuilly-inbox-test",
+	TEST_DB_NAME:         "tango-test",
 	TEST_DB_USER:         "postgres",
 	TEST_DB_PASS:         "postgres",
 	TEST_DB_MIGRATE_USER: "postgres",
 	TEST_DB_MIGRATE_PASS: "postgres",
 }
 
-var postgresInterface = map[string]interface{}{
+var postgresInterfaceConfig = map[string]interface{}{
 	I_QUERY_CONFIG: fazzdb.Config{
 		Limit:           MAX_PER_PAGE,
 		Offset:          0,

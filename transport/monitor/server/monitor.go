@@ -16,11 +16,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// MonitorServer used for serving monitor server
-type MonitorServer struct{}
+// monitorServer used for serving monitor server
+type monitorServer struct{}
 
 // Serve handle actual serving of monitor server
-func (ps *MonitorServer) Serve() {
+func (ps *monitorServer) Serve() {
 	if config.Get(config.PROMET_FLAG) == config.ON {
 		go func() {
 			http.Handle("/metrics", promhttp.Handler())
@@ -30,9 +30,9 @@ func (ps *MonitorServer) Serve() {
 	}
 }
 
-// CreateMonitorServer construct MonitorServer
+// CreateMonitorServer construct monitorServer
 func CreateMonitorServer() transport.ServerInterface {
-	return &MonitorServer{}
+	return &monitorServer{}
 }
 
 func reportChecks() []ping.ReportInterface {

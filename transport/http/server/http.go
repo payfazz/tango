@@ -16,13 +16,13 @@ import (
 	"github.com/payfazz/tango/transport/http/route"
 )
 
-// HttpServer used for serving HTTP endpoint
-type HttpServer struct {
+// httpServer used for serving HTTP endpoint
+type httpServer struct {
 	app *container.AppContainer
 }
 
 // Serve handle actual serving for HTTP server
-func (hs *HttpServer) Serve() {
+func (hs *httpServer) Serve() {
 	s := &http.Server{
 		Addr:         config.Get(config.HTTP_PORT),
 		ReadTimeout:  config.GetIfDuration(config.I_READ_TIMEOUT),
@@ -64,7 +64,7 @@ func (hs *HttpServer) Serve() {
 
 // CreateHttpServer construct HTTP server
 func CreateHttpServer(app *container.AppContainer) transport.ServerInterface {
-	return &HttpServer{
+	return &httpServer{
 		app: app,
 	}
 }

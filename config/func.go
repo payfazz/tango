@@ -198,6 +198,12 @@ func GetIfInteger(key string) int {
 	return getIf(key, t).(int)
 }
 
+// GetIfInt64 get config as int64
+func GetIfInt64(key string) int64 {
+	var t int64
+	return getIf(key, t).(int64)
+}
+
 // GetIfDuration get config as duration
 func GetIfDuration(key string) time.Duration {
 	var t time.Duration

@@ -8,7 +8,7 @@ var httpConfig = map[string]string{
 	HTTP_PORT: ":8080",
 }
 
-var httpInterface = map[string]interface{}{
+var httpInterfaceConfig = map[string]interface{}{
 	I_READ_TIMEOUT:  5 * time.Minute,
 	I_WRITE_TIMEOUT: 5 * time.Minute,
 	I_IDLE_TIMEOUT:  30 * time.Second,

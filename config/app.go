@@ -10,7 +10,7 @@ var appConfig = map[string]string{
 	THROTTLE_PREFIX: "tango-throttle",
 }
 
-var appInterface = map[string]interface{}{
+var appInterfaceConfig = map[string]interface{}{
 	I_THROTTLE_LIMIT:    40,
 	I_THROTTLE_DURATION: 60 * time.Second,
 	I_THROTTLE_TYPE:     value.IP_ENDPOINT,
