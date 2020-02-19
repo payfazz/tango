@@ -1,5 +1,7 @@
 package fazzrepository
 
+import "github.com/payfazz/go-errors"
+
 // emptyResultError appear when data returned as empty
 type emptyResultError struct{}
 
@@ -14,9 +16,15 @@ func NewEmptyResultError() error {
 }
 
 // IsEmptyResult check if instance of error is EmptyResultError
-func IsEmptyResult(err error) bool {
-	if _, ok := err.(*emptyResultError); ok {
+func IsEmptyResult(it interface{}) bool {
+	switch it.(type) {
+	case *errors.Error:
+		return IsEmptyResult(it.(*errors.Error).Cause())
+	case emptyResultError:
 		return true
+	case *emptyResultError:
+		return true
+	default:
+		return false
 	}
-	return false
 }

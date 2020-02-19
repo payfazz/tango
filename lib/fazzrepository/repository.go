@@ -4,6 +4,8 @@ import (
 	"context"
 	"reflect"
 
+	"github.com/payfazz/go-errors"
+
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 )
 
@@ -33,7 +35,8 @@ type Repository struct {
 
 // GetQuery get query instance from context
 func (r *Repository) GetQuery(ctx context.Context) (*fazzdb.Query, error) {
-	return fazzdb.GetTransactionOrQueryContext(ctx)
+	queryInstance, err := fazzdb.GetTransactionOrQueryContext(ctx)
+	return queryInstance, errors.Wrap(err)
 }
 
 // Count find count of rows using given conditions
@@ -128,12 +131,12 @@ func (r *Repository) FindOne(
 
 	rows, err := current.AllCtx(ctx)
 	if nil != err {
-		return nil, err
+		return nil, errors.Wrap(err)
 	}
 
 	val := reflect.ValueOf(rows)
 	if val.Len() == 0 {
-		return nil, NewEmptyResultError()
+		return nil, errors.Wrap(NewEmptyResultError())
 	}
 
 	return val.Index(0).Interface(), nil
@@ -152,12 +155,12 @@ func (r *Repository) Find(ctx context.Context, id interface{}) (interface{}, err
 		AllCtx(ctx)
 
 	if nil != err {
-		return nil, err
+		return nil, errors.Wrap(err)
 	}
 
 	val := reflect.ValueOf(rows)
 	if val.Len() == 0 {
-		return nil, NewEmptyResultError()
+		return nil, errors.Wrap(NewEmptyResultError())
 	}
 
 	return val.Index(0).Interface(), nil
@@ -174,7 +177,7 @@ func (r *Repository) Create(ctx context.Context, m fazzdb.ModelInterface) (inter
 		InsertCtx(ctx, false)
 
 	if nil != err {
-		return nil, err
+		return nil, errors.Wrap(err)
 	}
 
 	return result, nil
@@ -191,7 +194,7 @@ func (r *Repository) Update(ctx context.Context, m fazzdb.ModelInterface) (bool,
 		UpdateCtx(ctx)
 
 	if nil != err {
-		return false, err
+		return false, errors.Wrap(err)
 	}
 
 	return true, nil
@@ -208,10 +211,10 @@ func (r *Repository) Delete(ctx context.Context, m fazzdb.ModelInterface) (bool,
 		DeleteCtx(ctx)
 
 	if nil != err {
-		return false, err
+		return false, errors.Wrap(err)
 	}
 
-	return true, err
+	return true, nil
 }
 
 // NewRepository construct base repository
