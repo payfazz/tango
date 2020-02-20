@@ -24,7 +24,6 @@ type MiddlewareContainer struct {
 type prometheusMiddleware struct {
 	RequestCounter  func(next http.HandlerFunc) http.HandlerFunc
 	RequestDuration func(next http.HandlerFunc) http.HandlerFunc
-	StatusCounter   func(next http.HandlerFunc) http.HandlerFunc
 }
 
 // CreateMiddlewareContainer construct all middlewares used in the app
