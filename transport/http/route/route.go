@@ -18,7 +18,6 @@ func Compile(app *container.AppContainer) http.HandlerFunc {
 		app.HttpMiddleware.Cors,
 		app.HttpMiddleware.Prometheus.RequestDuration,
 		app.HttpMiddleware.Prometheus.RequestCounter,
-		app.HttpMiddleware.Prometheus.StatusCounter,
 	)
 	collection.RouteBase(r, app)
 	collection.RouteVersion1(r, app)

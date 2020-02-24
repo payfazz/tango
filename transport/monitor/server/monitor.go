@@ -43,10 +43,12 @@ func reportChecks() []ping.ReportInterface {
 			config.Get(config.DB_USER),
 			config.Get(config.DB_PASS),
 			config.Get(config.DB_NAME),
+			true,
 		),
 		messagebroker.NewRedisReportWithAddress(
 			config.Get(config.REDIS_HOST),
 			config.Get(config.REDIS_PASS),
+			true,
 		),
 	}
 }

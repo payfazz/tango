@@ -7,7 +7,7 @@ require (
 	github.com/go-kit/kit v0.9.0
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/lib/pq v1.3.0
-	github.com/payfazz/go-apt v0.17.15
+	github.com/payfazz/go-apt v0.18.3
 	github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f
 	github.com/payfazz/venlog v0.4.0
 	github.com/pkg/errors v0.9.1

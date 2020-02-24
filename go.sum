@@ -154,6 +154,8 @@ github.com/payfazz/go-apt v0.17.0/go.mod h1:Zu0o9VfIgKaIyUm+05WIcF4wA/s+d1el2Esj
 github.com/payfazz/go-apt v0.17.11/go.mod h1:3WNegycJ6d+UaSNen2ANOBnfrX5mmOowL5Wu7YGRUMQ=
 github.com/payfazz/go-apt v0.17.15 h1:uXJosvC3L3HRMH9LJOqmanScyPtyg9orap/8E8/YY1E=
 github.com/payfazz/go-apt v0.17.15/go.mod h1:3WNegycJ6d+UaSNen2ANOBnfrX5mmOowL5Wu7YGRUMQ=
+github.com/payfazz/go-apt v0.18.3 h1:1wLTtysPjkMiIOgQwhfCWYB0Wj12NSjGEqiEl+CpTmM=
+github.com/payfazz/go-apt v0.18.3/go.mod h1:WRwMIt9DHleJaCDKqUkZBvseg8WDOAp/isvuo0bpq+Q=
 github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f h1:BCImsRNTGTtHmeIf5BgYxFgo5FnQSJIt7BMKSwfeHqk=
 github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f/go.mod h1:0pfUhstdZUjwsGIvcOEn8hMWDiEZp4cgqGXfT16on6A=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4 h1:j0/j6gb1J8yElpROQtq3X8homJTUTXvmsYqVCogzX1c=
