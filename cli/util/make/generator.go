@@ -43,7 +43,7 @@ func GenerateModelStubs(structure *ModelStructure, baseDir string) {
 	}
 
 	dashboardDir := fmt.Sprintf("%s/%s", DASHBOARD_DIR, strings.ToLower(structure.Name))
-	if structure.Action.IsCommandNeeded() || structure.Action.IsCommandNeeded() {
+	if structure.Action.IsCommandNeeded() || structure.Action.IsQueryNeeded() {
 		generateFile(structure, dashboardDir, "dashboard", DASHBOARD_STUB_FILE)
 	}
 }
