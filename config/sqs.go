@@ -12,8 +12,8 @@ var sqsConfig = map[string]string{
 }
 
 var sqsInterfaceConfig = map[string]interface{}{
-	I_SQS_MAX_NUMBER_OF_MESSAGES: 10,
-	I_SQS_WAIT_TIME_SECONDS:      20,
+	I_SQS_MAX_NUMBER_OF_MESSAGES: int64(10),
+	I_SQS_WAIT_TIME_SECONDS:      int64(20),
 }
 
 // GetSqsAwsSession construct aws Session for sqs configuration
