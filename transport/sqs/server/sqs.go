@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"fmt"
+	"log"
 
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/payfazz/go-apt/pkg/fazzdb"
@@ -28,6 +30,8 @@ func (ss *sqsServer) Serve() {
 		Source:  venlogaws.NewSQSSource(sqsClient, config.GetReceiveMessageInput()),
 		Handler: route.Route(),
 	}
+
+	log.Println(fmt.Sprintf("SQS listening to %s", config.Get(config.SQS_QUEUE_URL)))
 	subs.Watch(sqsContext())
 }
 

@@ -4,11 +4,6 @@ package config
 // This file contains mapping of constant to environment variable name
 
 const (
-	MAX_PER_PAGE           = 20
-	UPDATE_BROADCAST_LIMIT = 3
-)
-
-const (
 	OFF = "off"
 	ON  = "on"
 )

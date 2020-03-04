@@ -1,6 +1,8 @@
 package server
 
 import (
+	"fmt"
+	"log"
 	"net"
 
 	"github.com/payfazz/tango/transport"
@@ -20,6 +22,10 @@ type grpcServer struct {
 
 // Serve handle actual serving of GRPC endpoint
 func (gs *grpcServer) Serve() {
+	if config.Get(config.GRPC_FLAG) == config.OFF {
+		return
+	}
+
 	go func() {
 		listener, err := net.Listen("tcp", config.Get(config.GRPC_PORT))
 		if nil != err {
@@ -31,6 +37,7 @@ func (gs *grpcServer) Serve() {
 		// Call RegisterEndpoint from grpc-client repository
 		// include baseMiddleware
 
+		log.Println(fmt.Sprintf("GRPC Server running at port %s", config.Get(config.GRPC_PORT)))
 		if err := serverInstance.Serve(listener); nil != err {
 			panic(err)
 		}

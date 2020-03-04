@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -21,13 +22,19 @@ type monitorServer struct{}
 
 // Serve handle actual serving of monitor server
 func (ps *monitorServer) Serve() {
-	if config.Get(config.PROMET_FLAG) == config.ON {
-		go func() {
-			http.Handle("/metrics", promhttp.Handler())
-			http.Handle("/ping", ping.Ping(config.Get(config.SERVICE_NAME), reportChecks()))
-			log.Println(http.ListenAndServe(config.Get(config.PROMET_PORT), nil))
-		}()
+	if config.Get(config.PROMET_FLAG) == config.OFF {
+		return
 	}
+
+	go func() {
+		http.Handle("/metrics", promhttp.Handler())
+		http.Handle("/ping", ping.Ping(config.Get(config.SERVICE_NAME), reportChecks()))
+
+		log.Println(fmt.Sprintf("Monitoring running at port %s", config.Get(config.PROMET_PORT)))
+		if err := http.ListenAndServe(config.Get(config.PROMET_PORT), nil); nil != err {
+			panic(err)
+		}
+	}()
 }
 
 // CreateMonitorServer construct monitorServer

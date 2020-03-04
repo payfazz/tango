@@ -4,6 +4,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	MAX_PER_PAGE = 20
+)
+
 var basicConfig = map[string]string{
 	SERVICE_NAME: "tango",
 	ENV:          ENV_DEVELOPMENT,

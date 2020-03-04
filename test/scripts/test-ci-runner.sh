@@ -13,15 +13,13 @@ trap cleanup EXIT
 
 push docker run -d --name $random alpine sleep 9999
 
-# Please change -e environment to match your test environment
-
 push docker run -d --net container:$random \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
-    -e POSTGRES_DB=tango-test \
+    -e POSTGRES_DB=tango \
     postgres
 push docker run -d --net container:$random \
     redis --requirepass redis
 
-image=$(docker build -q --target builder -f "$REPO/.ci/Dockerfile" "$REPO")
-docker run --net container:$random --rm -i $image < $DIR/test.sh || exit $?
+docker run --net container:$random --rm -v $REPO:/app -w /app -i golang:1.13 \
+    /bin/bash ./test/scripts/test-ci-setup.sh $1 $2 || exit $?
