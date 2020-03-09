@@ -24,7 +24,7 @@ func (ss *sqsServer) Serve() {
 		return
 	}
 
-	sqsClient := sqs.New(config.GetSqsAwsSession())
+	sqsClient := sqs.New(config.GetAwsSession())
 
 	subs := &venlogsubs.Subscription{
 		Source:  venlogaws.NewSQSSource(sqsClient, config.GetReceiveMessageInput()),

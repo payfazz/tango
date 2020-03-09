@@ -2,8 +2,6 @@ package config
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 )
 
@@ -14,23 +12,6 @@ var sqsConfig = map[string]string{
 var sqsInterfaceConfig = map[string]interface{}{
 	I_SQS_MAX_NUMBER_OF_MESSAGES: int64(10),
 	I_SQS_WAIT_TIME_SECONDS:      int64(20),
-}
-
-// GetSqsAwsSession construct aws Session for sqs configuration
-func GetSqsAwsSession() *session.Session {
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(Get(AWS_REGION)),
-		Credentials: credentials.NewStaticCredentials(
-			Get(AWS_ACCESS_KEY_ID),
-			Get(AWS_SECRET_ACCESS_KEY),
-			Get(AWS_SESSION_TOKEN),
-		),
-	})
-	if nil != err {
-		panic(err)
-	}
-
-	return sess
 }
 
 // GetReceiveMessageInput construct ReceiveMessageInput for sqs configuration
