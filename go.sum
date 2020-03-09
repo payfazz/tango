@@ -152,12 +152,12 @@ github.com/onsi/gomega v1.5.0/go.mod h1:ex+gbHU/CVuBBDIJjb2X0qEXbFg53c61hWP/1Cpa
 github.com/pascaldekloe/goe v0.1.0/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/payfazz/go-apt v0.17.0/go.mod h1:Zu0o9VfIgKaIyUm+05WIcF4wA/s+d1el2EsjA0NWYeY=
 github.com/payfazz/go-apt v0.17.11/go.mod h1:3WNegycJ6d+UaSNen2ANOBnfrX5mmOowL5Wu7YGRUMQ=
-github.com/payfazz/go-apt v0.17.15 h1:uXJosvC3L3HRMH9LJOqmanScyPtyg9orap/8E8/YY1E=
-github.com/payfazz/go-apt v0.17.15/go.mod h1:3WNegycJ6d+UaSNen2ANOBnfrX5mmOowL5Wu7YGRUMQ=
-github.com/payfazz/go-apt v0.18.3 h1:1wLTtysPjkMiIOgQwhfCWYB0Wj12NSjGEqiEl+CpTmM=
-github.com/payfazz/go-apt v0.18.3/go.mod h1:WRwMIt9DHleJaCDKqUkZBvseg8WDOAp/isvuo0bpq+Q=
+github.com/payfazz/go-apt v0.18.5 h1:FmqLF7XVGf2E6WaLPQRrswH18FvgLfoFs19vmYIEH5U=
+github.com/payfazz/go-apt v0.18.5/go.mod h1:EXklYkSVd2hQkDgHrZwpNRg+nnAIkLeypECzi7Xr+50=
 github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f h1:BCImsRNTGTtHmeIf5BgYxFgo5FnQSJIt7BMKSwfeHqk=
 github.com/payfazz/go-errors v0.0.0-20191025073222-7d2b25ce9a2f/go.mod h1:0pfUhstdZUjwsGIvcOEn8hMWDiEZp4cgqGXfT16on6A=
+github.com/payfazz/go-errors v0.0.0-20200306064529-cba3fc24420f h1:aURLS3eEW2rs/ZSuut4c1t2AdKyom79heOPJXTV1+BU=
+github.com/payfazz/go-errors v0.0.0-20200306064529-cba3fc24420f/go.mod h1:0pfUhstdZUjwsGIvcOEn8hMWDiEZp4cgqGXfT16on6A=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4 h1:j0/j6gb1J8yElpROQtq3X8homJTUTXvmsYqVCogzX1c=
 github.com/payfazz/go-middleware v0.0.0-20190630114857-3c69e9a326a4/go.mod h1:pGgGdE8OMjA0auJIXfMtJxSdiix2m8uA9P/fbGGwosE=
 github.com/payfazz/go-middleware v0.0.0-20190724100055-2ef25bcd2c13 h1:wC1HW3Go+0Fug8xG29Mi2NTefS+kQjEmTAMEc0eQOQk=
@@ -167,8 +167,8 @@ github.com/payfazz/go-router v0.0.0-20190701081537-248ed242457f/go.mod h1:J1cAkr
 github.com/payfazz/go-router v0.0.0-20190720102111-42516499ed6e h1:Hco9uMA0cs8Zca0qbgEF6gQQ6B/keYepjMRL6Q4Cq68=
 github.com/payfazz/go-router v0.0.0-20190720102111-42516499ed6e/go.mod h1:J1cAkrGlJ9w8+M7vx/MiylOqP6aVBpPkgwNf1RKEL9Y=
 github.com/payfazz/tango v0.3.1/go.mod h1:gVyFx3H8583QZPmKEVLpgig3ferpY4/ktTdlv2Sft88=
-github.com/payfazz/venlog v0.4.0 h1:tNYwau3uzom+mmbWCp1ljKEPr5eRY2OsHEwVquDYSEs=
-github.com/payfazz/venlog v0.4.0/go.mod h1:bGPg4a03Thw+QDrU+Yoti2nJuiGblKsnob+IfOzaPnQ=
+github.com/payfazz/venlog v0.8.0 h1:S6JwjlflnRJpLJexUomEUMsBgwe8RhMi4IjUgc/axi0=
+github.com/payfazz/venlog v0.8.0/go.mod h1:bGPg4a03Thw+QDrU+Yoti2nJuiGblKsnob+IfOzaPnQ=
 github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=

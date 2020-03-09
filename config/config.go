@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	MAX_PER_PAGE = 20
+	MAX_PER_PAGE        = 20
+	DEFAULT_FORMAT_DEEP = 8
 )
 
 var basicConfig = map[string]string{

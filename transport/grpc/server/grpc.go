@@ -5,6 +5,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/payfazz/tango/transport/grpc/middleware"
+
 	"github.com/payfazz/tango/transport"
 
 	"github.com/go-kit/kit/endpoint"
@@ -58,5 +60,6 @@ func baseMiddleware() endpoint.Middleware {
 	return endpoint.Chain(
 		app.DB(queryDb), // remove if db is not used
 		app.Redis(rds),  // remove if redis is not used
+		middleware.TranslateToGrpcError(),
 	)
 }

@@ -20,7 +20,7 @@ func PrepareTest() context.Context {
 	runningMigrations := append(migration.Sequence, testMigrations...)
 	fazzdb.Migrate(
 		config.GetMigrateDb(),
-		"test-neu-account-backend",
+		"test-tango-backend",
 		config.ForceMigrate(),
 		config.RunSeeder(),
 		runningMigrations...,

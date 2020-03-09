@@ -19,7 +19,7 @@ func NewEmptyResultError() error {
 func IsEmptyResult(it interface{}) bool {
 	switch it.(type) {
 	case *errors.Error:
-		return IsEmptyResult(it.(*errors.Error).Cause())
+		return IsEmptyResult(it.(*errors.Error).Cause)
 	case emptyResultError:
 		return true
 	case *emptyResultError:
