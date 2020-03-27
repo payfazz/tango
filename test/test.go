@@ -6,25 +6,13 @@ import (
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 	"github.com/payfazz/go-apt/pkg/fazzkv/redis"
 	"github.com/payfazz/tango/config"
-	"github.com/payfazz/tango/database/migration"
 	"github.com/payfazz/tango/transport/http/app"
 )
-
-var testMigrations = []fazzdb.MigrationVersion{}
 
 // PrepareTest connect test environment to testing db and redis
 func PrepareTest() context.Context {
 	config.Set(config.ENV, config.ENV_TESTING)
 	queryDb := fazzdb.QueryDb(config.GetDb(), config.GetQueryConfig())
-
-	runningMigrations := append(migration.Sequence, testMigrations...)
-	fazzdb.Migrate(
-		config.GetMigrateDb(),
-		"test-tango-backend",
-		config.ForceMigrate(),
-		config.RunSeeder(),
-		runningMigrations...,
-	)
 
 	ctx := context.Background()
 	ctx = app.NewAuthContext(ctx)
