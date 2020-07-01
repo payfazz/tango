@@ -81,14 +81,15 @@ func InitCommand() cli.Command {
 					return
 				}
 
-				cmd = exec.Command("sh", "-c", "cd "+tangoDir+" && git checkout new && git pull")
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
-				err = cmd.Run()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
+			}
+
+			cmd := exec.Command("sh", "-c", "cd "+tangoDir+" && git checkout new && git pull")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			err = cmd.Run()
+			if err != nil {
+				fmt.Println(err)
+				return
 			}
 
 			if runtime.GOOS == "darwin" { // mac
