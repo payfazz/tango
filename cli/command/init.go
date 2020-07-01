@@ -2,8 +2,6 @@ package command
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 	"runtime"
 
 	"github.com/payfazz/tango/cli/util"
@@ -43,7 +41,7 @@ cd $1
 mv cmd/tango cmd/$1
 find .ci cmd config database transport internal lib test -type f -exec sed -i '' "s/tango/$1/g" {} \;
 find .ci cmd config database transport internal lib test -type f -exec sed -i '' "s/\/template\/default//g" {} \;
-sed -i'' "s/tango\/template\/default/$1/g" go.mod
+sed -i '' "s/tango\/template\/default/$1/g" go.mod
 go mod tidy
 cd ..`
 
@@ -66,29 +64,6 @@ func InitCommand() cli.Command {
 
 			if "test" == projectName {
 				fmt.Println(invalidProjectName)
-				return
-			}
-
-			homeDir, _ := os.UserHomeDir()
-			tangoDir := homeDir + "/.tango"
-			if _, err = os.Stat(homeDir + "/.tango"); os.IsNotExist(err) {
-				cmd := exec.Command("git", "clone", "git@github.com:payfazz/tango.git", tangoDir)
-				cmd.Stdout = os.Stdout
-				cmd.Stderr = os.Stderr
-				err = cmd.Run()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-
-			}
-
-			cmd := exec.Command("sh", "-c", "cd "+tangoDir+" && git checkout new && git pull")
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			err = cmd.Run()
-			if err != nil {
-				fmt.Println(err)
 				return
 			}
 

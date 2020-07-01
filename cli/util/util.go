@@ -74,3 +74,27 @@ func RunScript(fileName string, content string, args ...string) error {
 
 	return nil
 }
+
+func PullRepoFolder(gitBranch string) {
+	homeDir, _ := os.UserHomeDir()
+	tangoDir := homeDir + "/.tango"
+	if _, err := os.Stat(homeDir + "/.tango"); os.IsNotExist(err) {
+		cmd := exec.Command("git", "clone", "git@github.com:payfazz/tango.git", tangoDir)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+
+	cmd := exec.Command("sh", "-c", "cd "+tangoDir+" && git checkout "+gitBranch+" && git pull")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}

@@ -16,7 +16,9 @@ func GenerateDomainStubs(structure *DomainStructure, baseDir string) {
 		panic(err)
 	}
 
-	generateFile(structure, dir, "service", SERVICE_STUB_FILE)
+	homeDir, _ := os.UserHomeDir()
+	tangoDir := homeDir + "/.tango"
+	generateFile(structure, dir, "service", tangoDir+SERVICE_STUB_FILE)
 }
 
 // GenerateModelStubs generate all required stubs for CRUD
@@ -30,21 +32,24 @@ func GenerateModelStubs(structure *ModelStructure, baseDir string) {
 		panic(err)
 	}
 
-	generateFile(structure, dir, "model", MODEL_STUB_FILE)
-	generateFile(structure, dir, "repository", REPOSITORY_STUB_FILE)
+	homeDir, _ := os.UserHomeDir()
+	tangoDir := homeDir + "/.tango"
+
+	generateFile(structure, dir, "model", tangoDir+MODEL_STUB_FILE)
+	generateFile(structure, dir, "repository", tangoDir+REPOSITORY_STUB_FILE)
 
 	if structure.Action.IsCommandNeeded() {
-		generateFile(structure, dir, "payload", PAYLOAD_STUB_FILE)
-		generateFile(structure, dir, "command", COMMAND_STUB_FILE)
+		generateFile(structure, dir, "payload", tangoDir+PAYLOAD_STUB_FILE)
+		generateFile(structure, dir, "command", tangoDir+COMMAND_STUB_FILE)
 	}
 
 	if structure.Action.IsQueryNeeded() {
-		generateFile(structure, dir, "query", QUERY_STUB_FILE)
+		generateFile(structure, dir, "query", tangoDir+QUERY_STUB_FILE)
 	}
 
 	dashboardDir := fmt.Sprintf("%s/%s", DASHBOARD_DIR, strings.ToLower(structure.Name))
 	if structure.Action.IsCommandNeeded() || structure.Action.IsQueryNeeded() {
-		generateFile(structure, dashboardDir, "dashboard", DASHBOARD_STUB_FILE)
+		generateFile(structure, dashboardDir, "dashboard", tangoDir+DASHBOARD_STUB_FILE)
 	}
 }
 

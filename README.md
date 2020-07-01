@@ -6,10 +6,10 @@ tango is a skeleton for building golang web services
 
 ### Installation
 
-Use the `go` command:
+Use the `go` command with `GO111MODULE=on`:
 
 ```
-$ go get github.com/payfazz/tango
+$ GO111MODULE=on go get github.com/payfazz/tango
 ```
 
 ### CLI Command
