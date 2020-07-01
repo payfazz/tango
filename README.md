@@ -12,6 +12,14 @@ Use the `go` command with `GO111MODULE=on`:
 $ GO111MODULE=on go get github.com/payfazz/tango
 ```
 
+### Update
+
+Use tango update command for app update:
+
+```
+$ tango update
+```
+
 ### CLI Command
 
 #### Init project

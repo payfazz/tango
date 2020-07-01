@@ -2,15 +2,14 @@ package command
 
 import (
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
 	"runtime"
 
 	"github.com/payfazz/tango/cli/util"
 	"github.com/urfave/cli"
 )
 
-var missingProjectName = `Invalid use of 'init' command!
-Please write your project name after 'init'
-Usage: tango init my-new-project`
+var missingProjectName = `Invalid project name, project name cannot be empty!`
 
 var invalidProjectName = `Invalid project name, 'test' cannot be used for project name!`
 
@@ -56,7 +55,13 @@ func InitCommand() cli.Command {
 		Action: func(c *cli.Context) {
 			var err error
 
-			projectName := c.Args().Get(0)
+			projectName := ""
+			_ = survey.AskOne(&survey.Input{
+				Renderer: survey.Renderer{},
+				Message:  "Project name:",
+				Default:  c.Args().Get(0),
+			}, &projectName)
+
 			if "" == projectName {
 				fmt.Println(missingProjectName)
 				return
@@ -67,6 +72,7 @@ func InitCommand() cli.Command {
 				return
 			}
 
+			fmt.Println("Initialize project directory..")
 			if runtime.GOOS == "darwin" { // mac
 				err = util.RunScript(fileName, initMacScripts, projectName)
 			} else { // linux
@@ -77,6 +83,7 @@ func InitCommand() cli.Command {
 				fmt.Println(err)
 				return
 			}
+			fmt.Println("Project skeleton generated.")
 		},
 	}
 }

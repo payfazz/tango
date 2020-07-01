@@ -17,10 +17,10 @@ func main() {
 	app.Commands = []cli.Command{
 		command.InitCommand(),
 		command.MakeCommand(),
+		command.UpdateCommand(),
 	}
 
-	const GitBranch = "new"
-	util.PullRepoFolder(GitBranch)
+	util.PullRepoFolder()
 
 	err := app.Run(os.Args)
 	if nil != err {
