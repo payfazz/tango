@@ -3,7 +3,7 @@ package config
 import (
 	"time"
 
-	"github.com/payfazz/tango/template/default/lib/fazzthrottle/value"
+	"github.com/payfazz/go-apt/pkg/fazzthrottle"
 )
 
 var appConfig = map[string]string{
@@ -13,7 +13,7 @@ var appConfig = map[string]string{
 var appInterfaceConfig = map[string]interface{}{
 	I_THROTTLE_LIMIT:    40,
 	I_THROTTLE_DURATION: 60 * time.Second,
-	I_THROTTLE_TYPE:     value.IP_ENDPOINT,
+	I_THROTTLE_TYPE:     fazzthrottle.IP_ENDPOINT,
 }
 
 const (

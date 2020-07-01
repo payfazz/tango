@@ -1,12 +1,12 @@
 package container
 
 import (
+	"github.com/payfazz/go-apt/pkg/fazzthrottle"
 	"net/http"
 
 	"github.com/payfazz/go-apt/pkg/fazzdb"
 	prometheus "github.com/payfazz/go-apt/pkg/fazzrouter/middleware"
 	"github.com/payfazz/tango/template/default/config"
-	"github.com/payfazz/tango/template/default/lib/fazzthrottle"
 	"github.com/payfazz/tango/template/default/transport/http/app"
 	"github.com/payfazz/tango/template/default/transport/http/middleware"
 )
@@ -52,6 +52,7 @@ func createThrottle() func(next http.HandlerFunc) http.HandlerFunc {
 		config.GetIfDuration(config.I_THROTTLE_DURATION),
 		config.GetIfLimitType(config.I_THROTTLE_TYPE),
 		config.UseThrottle(),
+		config.GetRedis,
 	)
 }
 

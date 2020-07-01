@@ -17,7 +17,6 @@ var basicConfig = map[string]string{
 	PROMET_FLAG:      ON,
 	GRPC_FLAG:        ON,
 	HTTP_FLAG:        ON,
-	SQS_FLAG:         OFF,
 
 	DEBUG_LOG: ON,
 }
@@ -30,13 +29,10 @@ var base = mergeConfig(
 	prometheusConfig,
 	httpConfig,
 	grpcConfig,
-	awsConfig,
-	sqsConfig,
 )
 
 var baseInterface = mergeConfigInterface(
 	appInterfaceConfig,
 	postgresInterfaceConfig,
 	httpInterfaceConfig,
-	sqsInterfaceConfig,
 )

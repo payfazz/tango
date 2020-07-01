@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/payfazz/go-apt/pkg/fazzdb"
-	"github.com/payfazz/tango/template/default/lib/fazzthrottle/value"
+	"github.com/payfazz/go-apt/pkg/fazzthrottle"
 )
 
 // Set add / change value to base config
@@ -60,9 +60,9 @@ func GetIfQueryConfig(key string) fazzdb.Config {
 }
 
 // GetIfLimitType get config as fazzthrottle.LimitType
-func GetIfLimitType(key string) value.LimitType {
-	var t value.LimitType
-	return getIf(key, t).(value.LimitType)
+func GetIfLimitType(key string) fazzthrottle.LimitType {
+	var t fazzthrottle.LimitType
+	return getIf(key, t).(fazzthrottle.LimitType)
 }
 
 // RunSeeder only run seeder on development environment
