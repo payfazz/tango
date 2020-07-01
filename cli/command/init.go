@@ -2,6 +2,8 @@ package command
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
 	"runtime"
 
 	"github.com/payfazz/tango/cli/util"
@@ -18,11 +20,14 @@ var initLinuxScripts = `#!/bin/sh
 
 set -x
 
-git clone git@github.com:payfazz/tango.git $1
+mkdir $1
+cp -a $HOME/.tango/template/default/. $1
+
 cd $1
 mv cmd/tango cmd/$1
 find .ci cmd config database transport internal lib test -type f -exec sed -i'' "s/tango/$1/g" {} \;
-sed -i'' "s/tango/$1/g" go.mod
+find .ci cmd config database transport internal lib test -type f -exec sed -i'' "s/\/template\/default//g" {} \;
+sed -i'' "s/tango\/template\/default/$1/g" go.mod
 go mod tidy
 rm -rf cli cli.go .git
 cd ..`
@@ -31,13 +36,15 @@ var initMacScripts = `#!/bin/sh
 
 set -x
 
-git clone git@github.com:payfazz/tango.git $1
+mkdir $1
+cp -a $HOME/.tango/template/default/. $1
+
 cd $1
 mv cmd/tango cmd/$1
 find .ci cmd config database transport internal lib test -type f -exec sed -i '' "s/tango/$1/g" {} \;
-sed -i '' "s/tango/$1/g" go.mod
+find .ci cmd config database transport internal lib test -type f -exec sed -i '' "s/\/template\/default//g" {} \;
+sed -i'' "s/tango\/template\/default/$1/g" go.mod
 go mod tidy
-rm -rf cli cli.go .git
 cd ..`
 
 // InitCommand defines cli.Command for init command
@@ -60,6 +67,28 @@ func InitCommand() cli.Command {
 			if "test" == projectName {
 				fmt.Println(invalidProjectName)
 				return
+			}
+
+			homeDir, _ := os.UserHomeDir()
+			tangoDir := homeDir + "/.tango"
+			if _, err = os.Stat(homeDir + "/.tango"); os.IsNotExist(err) {
+				cmd := exec.Command("git", "clone", "git@github.com:payfazz/tango.git", tangoDir)
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err = cmd.Run()
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+
+				cmd = exec.Command("sh", "-c", "cd "+tangoDir+" && git checkout new && git pull")
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err = cmd.Run()
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
 			}
 
 			if runtime.GOOS == "darwin" { // mac
