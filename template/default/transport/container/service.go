@@ -5,6 +5,6 @@ type ServiceContainer struct {
 }
 
 // CreateServiceContainer construct all services available in the app
-func CreateServiceContainer(repositories *RepositoryContainer, grpcClients *GrpcClientContainer, clients *ClientContainer) *ServiceContainer {
+func CreateServiceContainer(repositories *RepositoryContainer, clients *ClientContainer) *ServiceContainer {
 	return &ServiceContainer{}
 }
