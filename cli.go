@@ -13,7 +13,7 @@ func main() {
 	app.Name = "tango-cli"
 	app.Usage = "Easy way to use tango"
 	app.Author = "vekaputra & febrianram (fazzfinancial)"
-	app.Version = "2.0.0"
+	app.Version = "1.5.1"
 	app.Commands = []cli.Command{
 		command.InitCommand(),
 		command.MakeCommand(),
