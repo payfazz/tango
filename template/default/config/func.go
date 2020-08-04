@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"sort"
 	"time"
 
 	"github.com/payfazz/go-apt/pkg/fazzdb"
@@ -119,4 +120,17 @@ func mergeConfigInterface(configInterfaces ...map[string]interface{}) map[string
 	}
 
 	return result
+}
+
+func PrintEnv() {
+	keys := make([]string, 0)
+	for key, _ := range base {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	for _, key := range keys {
+		val := base[key]
+		fmt.Printf("%s: \"%s\"\n", key, val)
+	}
 }
