@@ -122,7 +122,8 @@ func mergeConfigInterface(configInterfaces ...map[string]interface{}) map[string
 	return result
 }
 
-func PrintEnv() {
+// PrintEnv prints environment variables sorted by key in ascending order.
+func PrintEnv(w io.Writer) error {
 	keys := make([]string, 0)
 	for key, _ := range base {
 		keys = append(keys, key)
@@ -131,6 +132,9 @@ func PrintEnv() {
 
 	for _, key := range keys {
 		val := base[key]
-		fmt.Printf("%s: \"%s\"\n", key, val)
+		if _, err := w.Write([]byte(fmt.Sprintf("%s: \"%s\"\n", key, val))); err != nil {
+			return err
+		}
 	}
+	return nil
 }
