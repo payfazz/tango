@@ -1,0 +1,6 @@
+version: 2
+type: group
+resources:
+- domain-note.yaml # basic example
+- domain-project.yaml # subdomain example
+- domain-inventory.yaml # multi subdomain example

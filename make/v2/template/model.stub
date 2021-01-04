@@ -1,0 +1,51 @@
+{{- define "model" -}}
+package {{.Package}}
+
+import (
+	"github.com/payfazz/go-apt/pkg/fazzdb"
+)
+
+// Model handle data for {{.Model.Table}} table
+type Model struct {
+	fazzdb.Model
+    {{.Model.PascalIdName}} {{.Model.IdType}} `json:"{{.Model.CamelIdName}}" db:"{{.Model.IdName}}"`
+    {{- range .Model.Fields}}
+	{{.PascalName}} {{.Type}} `json:"{{.CamelName}}" db:"{{.Name}}"`
+	{{- end}}
+}
+
+// NewModel construct the model
+func NewModel() *Model {
+	return &Model{
+		Model: fazzdb.{{.Model.Type}}(
+			"{{.Model.Table}}",
+			[]fazzdb.Column{
+	            fazzdb.Col("{{.Model.IdName}}"),
+			    {{- range .Model.Fields}}
+			    fazzdb.Col("{{.Name}}"),
+			    {{- end}}
+			},
+			"{{.Model.IdName}}",
+			{{.Model.Timestamps}},
+			{{.Model.SoftDelete}},
+		),
+	}
+}
+
+{{- if eq .Model.Type "UuidModel"}}
+// GeneratePK generate the primary key in {{.Model.Table}} table
+func (m *Model) GeneratePK() {
+	m.GenerateId(m)
+}
+{{- end}}
+
+// Get find model data by key
+func (m *Model) Get(key string) interface{} {
+	return m.Payload()[key]
+}
+
+// Payload map model data into map[string]interface{}
+func (m *Model) Payload() map[string]interface{} {
+	return m.MapPayload(m)
+}
+{{end -}}

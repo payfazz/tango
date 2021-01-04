@@ -1,0 +1,84 @@
+version: 2
+type: domain
+package: inventory
+subDomain:
+  - package: book
+    model:
+      table: table_books
+      softDeletes: false
+      fields:
+        - name: author_id
+          type: "*int64"
+        - name: name
+          type: string
+        - name: published_at
+          type: "*time.Time"
+    service:
+      methods:
+        - name: CreateBook
+          type: model_create
+        - name: UpdateBook
+          type: model_update
+        - name: DeleteBook
+          type: model_delete
+        - name: GetBook
+          type: model_get
+        - name: ListBook
+          type: model_list
+          filter:
+            - name: author_id
+              op: OP_EQUAL
+            - name: name
+              op: OP_LIKE
+            - name: published_at
+              op: OP_MORE_THAN
+
+  - package: publisher
+    model:
+      table: table_publishers
+      fields:
+        - name: book_id
+          type: "*string"
+        - name: name
+          type: string
+        - name: founded_at
+          type: "*time.Time"
+    service:
+      methods:
+        - name: UpdatePublisher
+          type: model_update
+
+  - package: author
+    model:
+      table: table_authors
+      type: AutoIncrementModel
+      fields:
+        - name: name
+          type: string
+        - name: country
+          type: string
+        - name: age
+          type: int
+        - name: address
+          type: string
+        - name: publisher_name
+          type: string
+    service:
+      methods:
+        - name: CreateAuthor
+          type: model_create
+        - name: GetAuthor
+          type: model_get
+        - name: ListAuthor
+          type: model_list
+          filter:
+            - name: name
+              op: OP_LIKE
+            - name: country
+              op: OP_LIKE
+            - name: age
+              op: OP_EQUAL
+            - name: address
+              op: OP_LIKE
+            - name: publisher_name
+              op: OP_LIKE

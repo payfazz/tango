@@ -1,0 +1,4 @@
+{{- define "result" -}}
+package {{.Package}}
+
+{{end -}}

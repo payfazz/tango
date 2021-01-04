@@ -1,11 +1,10 @@
 package command
 
 import (
+	"github.com/payfazz/tango/make/v1"
+	"github.com/payfazz/tango/util"
 	"io/ioutil"
 
-	"github.com/payfazz/tango/cli/util"
-
-	"github.com/payfazz/tango/cli/util/make"
 	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 )

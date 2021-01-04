@@ -1,0 +1,10 @@
+{{define "method_subdomain_forward"}}
+// {{.Name}}
+func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
+    return s.{{.Method.subPackage}}.{{.Method.name}}(ctx, payload)
+}
+{{end}}
+{{define "payload_subdomain_forward"}}
+{{end}}
+{{define "result_subdomain_forward"}}
+{{end}}

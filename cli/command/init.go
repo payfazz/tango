@@ -3,9 +3,9 @@ package command
 import (
 	"fmt"
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/payfazz/tango/util"
 	"runtime"
 
-	"github.com/payfazz/tango/cli/util"
 	"github.com/urfave/cli"
 )
 

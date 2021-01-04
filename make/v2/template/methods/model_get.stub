@@ -1,0 +1,10 @@
+{{define "method_model_get"}}
+// {{.Name}}
+func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
+    panic("todo")
+}
+{{end}}
+{{define "payload_model_get"}}
+{{end}}
+{{define "result_model_get"}}
+{{end}}

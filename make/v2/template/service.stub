@@ -1,0 +1,54 @@
+{{- define "service" -}}
+package {{.Package}}
+
+import (
+	"context"
+    "context"
+    "fmt"
+    "github.com/payfazz/fz-sentry/httperror"
+    "github.com/payfazz/go-apt/pkg/fazzcommon/filter"
+    "github.com/payfazz/go-apt/pkg/fazzrepository"
+)
+
+// ServiceInterface contract for {{.Package}} service
+type ServiceInterface interface {
+{{- range .Service.MethodImpls}}
+    {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}})
+{{- end}}
+}
+
+type Service struct {
+{{- if .Model}}
+    Repository fazzrepository.RepositoryInterface
+{{- end}}
+{{- range .SubDomains}}{{if .Service}}
+    {{.PascalPackage}} {{.Package}}.ServiceInterface
+{{- end}}{{end}}
+}
+
+// Service constructor of {{.Package}}
+func NewService(payload ServicePayload) *Service {
+	return &Service{
+    {{- if .Model}}
+        Repository: payload.Repository,
+    {{- end}}
+    {{- range .SubDomains}}{{if .Service}}
+        {{.PascalPackage}}: &{{.Package}}.Service{
+        {{- if .Model}}
+            Repository: payload.{{.PascalPackage}}Repository,
+        {{- end}}
+        },
+    {{- end}}{{end}}
+    }
+}
+
+// ServicePayload is payload to create new service
+type ServicePayload struct {
+{{- if .Model}}
+    Repository fazzrepository.RepositoryInterface
+{{- end}}
+{{- range .SubDomains -}}{{- if .Service}}
+    {{.PascalPackage}}Repository fazzrepository.RepositoryInterface
+{{- end -}}{{- end}}
+}
+{{end -}}

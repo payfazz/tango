@@ -1,0 +1,15 @@
+{{define "method_model_list"}}
+// {{.Name}}
+func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
+    panic("todo")
+}
+{{end}}
+{{define "payload_model_list"}}
+type ListPayload struct {
+{{- range .Fields}}
+    {{.PascalName}} {{.Type}} `json:"{{.CamelName}}"`
+{{- end}}
+}
+{{end}}
+{{define "result_model_list"}}
+{{end}}

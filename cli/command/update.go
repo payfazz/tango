@@ -2,7 +2,7 @@ package command
 
 import (
 	"fmt"
-	"github.com/payfazz/tango/cli/util"
+	"github.com/payfazz/tango/util"
 
 	"github.com/urfave/cli"
 )

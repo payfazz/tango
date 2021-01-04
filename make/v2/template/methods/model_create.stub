@@ -1,0 +1,20 @@
+{{define "method_model_create"}}
+// {{.Name}}
+func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
+    model := NewModel()
+    {{- range .Payload.Fields}}
+    model.{{.PascalName}} = payload.{{.PascalName}}
+    {{- end}}
+    _, err := s.Repository.Create(ctx, model)
+    return err
+}
+{{end}}
+{{define "payload_model_create"}}
+type CreatePayload struct {
+{{- range .Fields}}
+    {{.PascalName}} {{.Type}} `json:"{{.CamelName}}"`
+{{- end}}
+}
+{{end}}
+{{define "result_model_create"}}
+{{end}}

@@ -1,0 +1,58 @@
+version: 2
+type: domain
+package: project
+model:
+  table: table_project
+  fields:
+    - name: name
+      type: string
+service:
+  methods:
+    - name: CreateProject
+      type: model_create
+    - name: UpdateProject
+      type: model_update
+    - name: GetProject
+      type: model_update
+    - name: ListProject
+      type: model_list
+      order:
+        - field: name
+      filter:
+        - name: id
+          op: OP_EQUAL
+        - name: name
+          op: OP_LIKE
+subDomains:
+  - package: task
+    model:
+      table: table_project_task
+      fields:
+        - name: project_id
+          type: string
+        - name: name
+          type: string
+        - name: done
+          type: string
+    service:
+      methods:
+        - name: CreateTask
+          type: model_create
+        - name: UpdateTask
+          type: model_update
+        - name: DeleteTask
+          type: model_delete
+        - name: ListTask
+          type: model_list
+          order:
+            - field: name
+          filter:
+            - name: id
+              op: OP_EQUAL
+            - name: project_id
+              op: OP_EQUAL
+            - name: done
+              type: "*boolean"
+              op: OP_EQUAL
+
+

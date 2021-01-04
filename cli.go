@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/payfazz/tango/cli/command"
-	"github.com/payfazz/tango/cli/util"
+	util2 "github.com/payfazz/tango/util"
 	"github.com/urfave/cli"
 	"log"
 	"os"
@@ -20,7 +20,7 @@ func main() {
 		command.UpdateCommand(),
 	}
 
-	util.PullRepoFolder()
+	util2.PullRepoFolder()
 
 	err := app.Run(os.Args)
 	if nil != err {

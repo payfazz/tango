@@ -2,9 +2,8 @@ package make
 
 import (
 	"fmt"
+	util2 "github.com/payfazz/tango/util"
 	"strings"
-
-	"github.com/payfazz/tango/cli/util"
 )
 
 // StructureMap handle overall structure mapping
@@ -19,7 +18,7 @@ type DomainStructure struct {
 }
 
 func (d *DomainStructure) CamelDomain() string {
-	return util.SnakeToCamelCase(d.Domain)
+	return util2.SnakeToCamelCase(d.Domain)
 }
 
 func (d *DomainStructure) LowerDomain() string {
@@ -48,7 +47,7 @@ type ModelStructure struct {
 }
 
 func (s *ModelStructure) CamelModel() string {
-	return util.SnakeToCamelCase(s.Name)
+	return util2.SnakeToCamelCase(s.Name)
 }
 
 func (s *ModelStructure) LowerModel() string {
@@ -67,11 +66,11 @@ type Field struct {
 }
 
 func (f *Field) PascalName() string {
-	return util.SnakeToPascalCase(f.Name)
+	return util2.SnakeToPascalCase(f.Name)
 }
 
 func (f *Field) CamelName() string {
-	return util.SnakeToCamelCase(f.Name)
+	return util2.SnakeToCamelCase(f.Name)
 }
 
 // Action handle functionality that will be generated

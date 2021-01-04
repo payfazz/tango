@@ -1,0 +1,40 @@
+version: 2
+type: domain
+package: note # required, package name
+model: # not required if model not needed
+  table: table_note # required, Exact table name in database
+  type: UuidModel # not required, UuidModel | PlainModel | AutoIncrementModel (default: UuidModel)
+  idName: id # not required, must be in snake_case, default: id
+  idType: string # not required, default: string if UuidModel, int64 if other
+  timestamps: true # not required, true | false (default true)
+  softDelete: false # not required, true | false (default true)
+  fields: # name must be in snake_case
+    - name: name
+      type: string
+service:
+  methods:
+    - name: CreateNote
+      type: model_create
+    - name: UpdateNote
+      type: model_update
+    - name: DeleteNote
+      type: model_delete
+    - name: ListNote
+      type: model_list
+      order:
+        - field: created_at
+          direction: DIR_ASC # not required, default DIR_ASC
+          nullsLast: false # not required, default false
+      filter:
+        - name: id # name in payload filter
+          field: id # db field name (if omitted will use name)
+          type: string # payload type (if omitted will use model field type)
+          op: OP_EQUAL # fazzdb operation
+        - name: name
+          op: OP_LIKE
+        - name: start
+          field: created_at
+          op: OP_MORE_THAN_EQUALS
+        - name: end
+          field: created_at
+          op: OP_LESS_THAN_EQUALS
