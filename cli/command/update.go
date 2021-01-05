@@ -14,6 +14,7 @@ set -x
 
 cd $HOME/.tango
 
+git reset --hard
 git checkout ` + gitBranch + `
 git pull
 GO111MODULE=on go install
