@@ -13,7 +13,7 @@ service:
     - name: UpdateProject
       type: model_update
     - name: GetProject
-      type: model_update
+      type: model_get
     - name: ListProject
       type: model_list
       order:

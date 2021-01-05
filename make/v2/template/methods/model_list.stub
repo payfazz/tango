@@ -6,7 +6,7 @@ func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{e
 {{end}}
 {{define "payload_model_list"}}
 type ListPayload struct {
-{{- range .Fields}}
+{{- range .Payload.Fields}}
     {{.PascalName}} {{.Type}} `json:"{{.CamelName}}"`
 {{- end}}
 }

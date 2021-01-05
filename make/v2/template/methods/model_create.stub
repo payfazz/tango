@@ -11,7 +11,7 @@ func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{e
 {{end}}
 {{define "payload_model_create"}}
 type CreatePayload struct {
-{{- range .Fields}}
+{{- range .Payload.Fields}}
     {{.PascalName}} {{.Type}} `json:"{{.CamelName}}"`
 {{- end}}
 }

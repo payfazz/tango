@@ -1,12 +1,30 @@
 {{define "method_model_update"}}
 // {{.Name}}
 func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
-    panic("todo")
+    prev, err := s.Repository.FindOne(ctx, []fazzdb.SliceCondition{
+        {Connector: fazzdb.CO_NONE, Field: "{{.Data.idName}}", Operator: fazzdb.OP_EQUALS, Value: payload.{{.Data.pascalIdName}}},
+        }, nil)
+
+    if err != nil && !fazzrepository.IsEmptyResult(err) {
+        return err
+    }
+    if fazzrepository.IsEmptyResult(err) {
+        return httperror.NotFound(fmt.Errorf("not found"))
+    }
+    model := prev.(*Model)
+    model.{{.Data.pascalIdName}} = payload.{{.Data.pascalIdName}}
+{{- range .Payload.Fields}}
+    model.{{.PascalName}} = payload.{{.PascalName}}
+{{- end}}
+
+    _, err = s.Repository.Update(ctx, model)
+    return err
 }
 {{end}}
 {{define "payload_model_update"}}
 type UpdatePayload struct {
-{{- range .Fields}}
+    {{.Data.pascalIdName}} {{.Data.idType}} `json:"{{.Data.camelIdName}}"`
+{{- range .Payload.Fields}}
     {{.PascalName}} {{.Type}} `json:"{{.CamelName}}"`
 {{- end}}
 }

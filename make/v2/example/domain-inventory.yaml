@@ -1,7 +1,9 @@
 version: 2
 type: domain
 package: inventory
-subDomain:
+service:
+  methods: []
+subDomains:
   - package: book
     model:
       table: table_books

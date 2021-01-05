@@ -3,7 +3,6 @@ package {{.Package}}
 
 import (
 	"context"
-    "context"
     "fmt"
     "github.com/payfazz/fz-sentry/httperror"
     "github.com/payfazz/go-apt/pkg/fazzcommon/filter"
@@ -15,6 +14,9 @@ type ServiceInterface interface {
 {{- range .Service.MethodImpls}}
     {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}})
 {{- end}}
+{{- range .SubDomains}}{{if .Service}}
+    {{.Package}}.ServiceInterface
+{{- end}}{{end}}
 }
 
 type Service struct {

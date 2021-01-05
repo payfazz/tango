@@ -27,7 +27,7 @@ const (
 )
 
 const (
-	STRUCTURE_PATH = "./make/v1/structure.yaml"
+	STRUCTURE_FILE = "./make/structure.yaml"
 )
 
 var DIR_FILE_MODE = os.FileMode(0744)

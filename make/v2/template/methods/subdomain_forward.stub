@@ -1,7 +1,7 @@
 {{define "method_subdomain_forward"}}
 // {{.Name}}
 func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
-    return s.{{.Method.subPackage}}.{{.Method.name}}(ctx, payload)
+    return s.{{.Data.package}}.{{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}}{{end}})
 }
 {{end}}
 {{define "payload_subdomain_forward"}}

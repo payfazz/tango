@@ -2,6 +2,7 @@ package make_test
 
 import (
 	"fmt"
+	"github.com/payfazz/tango/make/v2"
 	"github.com/payfazz/tango/make/v2/structure"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v2"
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMake(t *testing.T) {
-	file, err := os.Open("example/domain-note.yaml")
+	file, err := os.Open("example/domain-project.yaml")
 	require.NoError(t, err)
 
 	byteVal, err := ioutil.ReadAll(file)
@@ -26,7 +27,7 @@ func TestMake(t *testing.T) {
 
 	tpl := template.Must(template.ParseGlob("template/*.stub"))
 	tpl = template.Must(tpl.ParseGlob("template/methods/*.stub"))
-	err = os.MkdirAll("./test", os.ModePerm)
+	err = os.MkdirAll("./test", make.DIR_FILE_MODE)
 	require.NoError(t, err)
 	modelFile, err := os.Create("./test/model.go")
 	require.NoError(t, err)
@@ -56,9 +57,17 @@ func TestMake(t *testing.T) {
 	for _, meth := range domain.Service.MethodImpls {
 		err = tpl.ExecuteTemplate(serviceFile, fmt.Sprintf("method_%s", meth.Type), meth)
 		require.NoError(t, err)
-		err = tpl.ExecuteTemplate(payloadFile, fmt.Sprintf("payload_%s", meth.Type), meth.Payload)
+		err = tpl.ExecuteTemplate(payloadFile, fmt.Sprintf("payload_%s", meth.Type), meth)
 		require.NoError(t, err)
-		err = tpl.ExecuteTemplate(resultFile, fmt.Sprintf("result_%s", meth.Type), meth.Result)
+		err = tpl.ExecuteTemplate(resultFile, fmt.Sprintf("result_%s", meth.Type), meth)
+		require.NoError(t, err)
+	}
+	for _, meth := range domain.Service.SubdomainMethodImpls {
+		err = tpl.ExecuteTemplate(serviceFile, fmt.Sprintf("method_%s", meth.Type), meth)
+		require.NoError(t, err)
+		err = tpl.ExecuteTemplate(payloadFile, fmt.Sprintf("payload_%s", meth.Type), meth)
+		require.NoError(t, err)
+		err = tpl.ExecuteTemplate(resultFile, fmt.Sprintf("result_%s", meth.Type), meth)
 		require.NoError(t, err)
 	}
 }

@@ -3,6 +3,8 @@ package structure
 import (
 	"fmt"
 	"github.com/payfazz/tango/util"
+	"strings"
+	"unicode"
 )
 
 type Domain struct {
@@ -17,6 +19,49 @@ func (d *Domain) GenerateDefault() error {
 		err := sub.GenerateDefault()
 		if err != nil {
 			return err
+		}
+		if d.Service != nil {
+			for _, methImpl := range sub.Service.MethodImpls {
+				var params []MethodParam
+				for _, param := range methImpl.Params {
+					if unicode.IsUpper([]rune(param.Type)[0]) {
+						params = append(params, MethodParam{
+							Name: param.Name,
+							Type: fmt.Sprintf("%s.%s", sub.Package, param.Type),
+						})
+					} else {
+						params = append(params, param)
+					}
+				}
+				var returns []MethodReturn
+				for _, ret := range methImpl.Returns {
+					if unicode.IsUpper([]rune(ret.Type)[0]) {
+						returns = append(returns, MethodReturn{
+							Type: fmt.Sprintf("%s.%s", sub.Package, ret.Type),
+						})
+					} else if strings.HasPrefix(ret.Type, "*") && unicode.IsUpper([]rune(ret.Type)[1]) {
+						returns = append(returns, MethodReturn{
+							Type: fmt.Sprintf("*%s.%s", sub.Package, ret.Type[1:]),
+						})
+					} else if strings.HasPrefix(ret.Type, "[]*") && unicode.IsUpper([]rune(ret.Type)[3]) {
+						returns = append(returns, MethodReturn{
+							Type: fmt.Sprintf("[]*%s.%s", sub.Package, ret.Type[3:]),
+						})
+					} else {
+						returns = append(returns, ret)
+					}
+				}
+
+				d.Service.SubdomainMethodImpls = append(d.Service.SubdomainMethodImpls, MethodImpl{
+					Name:    methImpl.Name,
+					Type:    "subdomain_forward",
+					Params:  params,
+					Returns: returns,
+					Data: map[string]string{
+						"package": sub.PascalPackage(),
+					},
+				})
+			}
 		}
 	}
 	if d.Package == "" {
@@ -51,9 +96,9 @@ func (d *Domain) generateModelDefault() error {
 	}
 	if m.IdType == "" {
 		if m.Type == "UuidModel" {
-			m.Type = "string"
+			m.IdType = "string"
 		} else {
-			m.Type = "int64"
+			m.IdType = "int64"
 		}
 	}
 	if m.Timestamps == nil {
@@ -69,6 +114,7 @@ func (d *Domain) generateModelDefault() error {
 
 func (d *Domain) generateServiceDefault() error {
 	s := d.Service
+	var methodImpls []MethodImpl
 	for _, def := range s.MethodDefs {
 		methodImpl := MethodImpl{
 			Name: def["name"].(string),
@@ -93,16 +139,24 @@ func (d *Domain) generateServiceDefault() error {
 				Type: "UpdatePayload",
 			})
 			methodImpl.Payload = Payload{
-				Fields: append([]Field{{
-					Name: d.Model.IdName,
-					Type: d.Model.IdType,
-				}}, d.Model.Fields...),
+				Fields: d.Model.Fields,
+			}
+			methodImpl.Data = map[string]string{
+				"idName":       d.Model.IdName,
+				"pascalIdName": d.Model.PascalIdName(),
+				"camelIdName":  d.Model.CamelIdName(),
+				"idType":       d.Model.IdType,
 			}
 		case "model_delete":
 			methodImpl.Params = append(methodImpl.Params, MethodParam{
 				Name: d.Model.IdName,
 				Type: d.Model.IdType,
 			})
+			methodImpl.Data = map[string]string{
+				"idName":       d.Model.IdName,
+				"pascalIdName": d.Model.PascalIdName(),
+				"camelIdName":  d.Model.CamelIdName(),
+			}
 		case "model_get":
 			methodImpl.Params = append(methodImpl.Params, MethodParam{
 				Name: d.Model.IdName,
@@ -111,6 +165,11 @@ func (d *Domain) generateServiceDefault() error {
 			methodImpl.Returns = append([]MethodReturn{{
 				Type: "*Model",
 			}}, methodImpl.Returns...)
+			methodImpl.Data = map[string]string{
+				"idName":       d.Model.IdName,
+				"pascalIdName": d.Model.PascalIdName(),
+				"camelIdName":  d.Model.CamelIdName(),
+			}
 		case "model_list":
 			methodImpl.Params = append(methodImpl.Params,
 				MethodParam{
@@ -127,8 +186,9 @@ func (d *Domain) generateServiceDefault() error {
 			}}, methodImpl.Returns...)
 		}
 
-		s.MethodImpls = append(s.MethodImpls, methodImpl)
+		methodImpls = append(methodImpls, methodImpl)
 	}
+	s.MethodImpls = append(methodImpls, s.MethodImpls...)
 	return nil
 }
 
@@ -168,8 +228,9 @@ func (m Field) CamelName() string {
 }
 
 type Service struct {
-	MethodDefs  []MethodDef  `yaml:"methods"`
-	MethodImpls []MethodImpl `yaml:"-"`
+	MethodDefs           []MethodDef  `yaml:"methods"`
+	MethodImpls          []MethodImpl `yaml:"-"`
+	SubdomainMethodImpls []MethodImpl `yaml:"-"`
 }
 
 type MethodDef map[string]interface{}
@@ -181,6 +242,7 @@ type MethodImpl struct {
 	Returns []MethodReturn
 	Payload Payload
 	Result  Result
+	Data    map[string]string
 }
 
 type Payload struct {

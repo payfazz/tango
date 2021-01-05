@@ -1,7 +1,19 @@
 {{define "method_model_delete"}}
 // {{.Name}}
 func (s *Service) {{.Name}}({{range $idx, $params := .Params}}{{if  $idx }}, {{end}}{{$params.Name}} {{$params.Type}}{{end}}) ({{range $idx, $returns := .Returns}}{{if  $idx }}, {{end}}{{$returns.Type}}{{end}}) {
-    panic("todo")
+    prev, err := s.Repository.FindOne(ctx, []fazzdb.SliceCondition{
+        {Connector: fazzdb.CO_NONE, Field: "{{.Data.idName}}", Operator: fazzdb.OP_EQUALS, Value: {{.Data.camelIdName}}},
+    }, nil)
+
+    if err != nil && !fazzrepository.IsEmptyResult(err) {
+        return err
+    }
+    if fazzrepository.IsEmptyResult(err) {
+        return nil
+    }
+
+    _, err = s.Repository.Delete(ctx, prev.(*Model))
+    return err
 }
 {{end}}
 {{define "payload_model_delete"}}
