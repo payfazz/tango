@@ -9,7 +9,8 @@ tango is a skeleton for building golang web services
 Use the `go` command with `GO111MODULE=on`:
 
 ```
-$ GO111MODULE=on go get github.com/payfazz/tango
+$ export GO111MODULE=on 
+$ go get github.com/payfazz/tango
 ```
 
 ### Update
